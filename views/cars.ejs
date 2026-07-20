@@ -47,7 +47,7 @@
           <a class="car-card-link" href="/auta/<%= car.id %>">
             <div class="car-photo">
               <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
-              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
+              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } else if (car.category === 'w_drodze') { %><span class="badge-transit">W drodze</span><% } %>
               <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
             </div>
             <div class="car-info">

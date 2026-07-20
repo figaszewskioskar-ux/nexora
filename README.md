@@ -42,8 +42,8 @@ ADMIN_USER=twojlogin ADMIN_PASSWORD=silne-haslo npm start
 
 ### Strona publiczna
 - Strona główna: hero, „Jak działamy" (aukcje Copart/IAAI → licytacja → transport → odbiór), baner „auta od ręki", „Dlaczego my", opinie, wyróżnione auta, kontakt.
-- `/auta` — **Auta na sprzedaż** (oferta importowa) z wyszukiwarką, filtrami (marka, paliwo) i sortowaniem.
-- `/gotowe` — **Auta od ręki** — osobna zakładka z autami już sprowadzonymi, gotowymi do odbioru (oznaczone zielonym znaczkiem „Od ręki").
+- `/gotowe` — **Auta od ręki** — auta na placu przy ul. Puławskiej 504 w Warszawie (zielony znaczek „Od ręki"); wyszukiwarka, filtry (marka, paliwo), sortowanie.
+- `/w-drodze` — **W drodze do Polski** — auta kupione na aukcjach, będące w transporcie (bursztynowy znaczek „W drodze"); możliwa rezerwacja przed dostawą.
 - `/auta/:id` — karta auta: galeria zdjęć, dane techniczne, opis, link do Otomoto, formularz zapytania o konkretne auto.
 - Formularz kontaktowy — wiadomości trafiają do panelu admina (zakładka „Wiadomości").
 - Live chat (Socket.io) — pływający widget na każdej stronie; rozmowa zapisywana w bazie, historia utrzymywana w `localStorage`.
@@ -51,7 +51,7 @@ ADMIN_USER=twojlogin ADMIN_PASSWORD=silne-haslo npm start
 ### Panel administratora (`/admin`)
 - Logowanie (hasła hashowane bcrypt, sesje po stronie serwera).
 - Ogłoszenia: dodawanie, edycja, usuwanie, statusy (dostępny / zarezerwowany / sprzedany), wyróżnianie na stronie głównej.
-- Dwie kategorie ogłoszeń: **Auta od ręki** (już sprowadzone) i **Auta na sprzedaż** (oferta importowa) — osobna zakładka „Dodaj gotowe auto" w menu panelu; kategorię można też zmienić przy edycji i wybrać przy imporcie z Otomoto.
+- Dwie kategorie ogłoszeń: **Auta od ręki** (na placu) i **W drodze do Polski** (w transporcie) — osobne zakładki „Dodaj auto od ręki" i „Dodaj auto w drodze" w menu panelu; kategorię można zmienić przy edycji i wybrać przy imporcie z Otomoto.
 - Zdjęcia: upload plików lub adresy URL; zarządzanie zdjęciami przy edycji.
 - **Import z Otomoto**: wklej link do pojedynczego ogłoszenia (`/oferta/...`) albo profilu dealera — pobierane są tytuł, cena, opis, zdjęcia i dane techniczne (`__NEXT_DATA__` → JSON-LD → meta tagi). Duplikaty (ten sam URL) są pomijane.
 - Wiadomości z formularza kontaktowego (z powiązaniem z autem, którego dotyczą).

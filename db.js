@@ -78,11 +78,13 @@ if (!sessionCols.includes('visitor_email')) {
   db.exec('ALTER TABLE chat_sessions ADD COLUMN visitor_email TEXT');
 }
 
-// --- Migracja: kategoria ogłoszenia (import na zamówienie / gotowe od ręki) ---
+// --- Migracja: kategoria ogłoszenia (gotowe = od ręki / w_drodze = w transporcie) ---
 const carCols = db.prepare(`PRAGMA table_info(cars)`).all().map(c => c.name);
 if (!carCols.includes('category')) {
-  db.exec(`ALTER TABLE cars ADD COLUMN category TEXT DEFAULT 'import'`);
+  db.exec(`ALTER TABLE cars ADD COLUMN category TEXT DEFAULT 'gotowe'`);
 }
+// dawna kategoria "import" (oferta na zamówienie) stała się kategorią "w drodze do Polski"
+db.prepare(`UPDATE cars SET category = 'w_drodze' WHERE category = 'import'`).run();
 
 // --- Seed admin user ---
 const adminExists = db.prepare('SELECT COUNT(*) AS c FROM users').get().c > 0;
@@ -142,20 +144,20 @@ if (carsCount === 0) {
     {
       title: 'Tesla Model 3 Long Range AWD', brand: 'Tesla', model: 'Model 3', year: 2022, price: 139900,
       mileage: 27000, fuel: 'Elektryczny', transmission: 'Automatyczna', power: 440, engine_capacity: 0,
-      body_type: 'Sedan', color: 'Biały', featured: 0, category: 'import', accent: '#e5e7eb',
-      description: 'Tesla Model 3 Long Range z napędem AWD. Zasięg do 560 km, autopilot, aktualizacje OTA. Auto z rynku amerykańskiego, sprawdzone, po przeglądzie.'
+      body_type: 'Sedan', color: 'Biały', featured: 0, category: 'w_drodze', accent: '#e5e7eb',
+      description: 'Tesla Model 3 Long Range z napędem AWD. Zasięg do 560 km, autopilot, aktualizacje OTA. Auto z rynku amerykańskiego, sprawdzone. W transporcie do Polski — możliwa rezerwacja.'
     },
     {
       title: 'Chevrolet Camaro SS 6.2 V8', brand: 'Chevrolet', model: 'Camaro SS', year: 2019, price: 144900,
       mileage: 64000, fuel: 'Benzyna', transmission: 'Manualna', power: 453, engine_capacity: 6200,
-      body_type: 'Coupe', color: 'Żółty', featured: 0, category: 'import', accent: '#eab308',
-      description: 'Chevrolet Camaro SS z manualną skrzynią biegów. Silnik 6.2 V8, sportowy wydech, świetny stan techniczny i wizualny. Import USA, opłacony.'
+      body_type: 'Coupe', color: 'Żółty', featured: 0, category: 'w_drodze', accent: '#eab308',
+      description: 'Chevrolet Camaro SS z manualną skrzynią biegów. Silnik 6.2 V8, sportowy wydech, świetny stan techniczny i wizualny. Import USA, opłacony. Auto w drodze do Polski — zarezerwuj przed dostawą.'
     },
     {
       title: 'RAM 1500 Laramie 5.7 HEMI 4x4', brand: 'RAM', model: '1500 Laramie', year: 2021, price: 219900,
       mileage: 47000, fuel: 'Benzyna+LPG', transmission: 'Automatyczna', power: 401, engine_capacity: 5700,
-      body_type: 'Pickup', color: 'Srebrny', featured: 0, category: 'import', accent: '#94a3b8',
-      description: 'RAM 1500 Laramie — król amerykańskich pickupów. HEMI 5.7 z LPG, napęd 4x4, skóra, podgrzewane fotele. Idealny do pracy i na co dzień. VAT-1 możliwy.'
+      body_type: 'Pickup', color: 'Srebrny', featured: 0, category: 'w_drodze', accent: '#94a3b8',
+      description: 'RAM 1500 Laramie — król amerykańskich pickupów. HEMI 5.7 z LPG, napęd 4x4, skóra, podgrzewane fotele. Idealny do pracy i na co dzień. VAT-1 możliwy. Auto w transporcie — zapytaj o termin dostawy.'
     }
   ];
 

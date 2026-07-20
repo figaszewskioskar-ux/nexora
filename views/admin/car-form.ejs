@@ -5,10 +5,10 @@
   <title><%= car ? 'Edytuj auto' : 'Dodaj auto' %> — Panel Level Auto</title>
 </head>
 <body class="admin-body">
-<%- include('partials/admin-nav', { tab: car ? 'cars' : (presetCategory === 'gotowe' ? 'new-ready' : 'new') }) %>
+<%- include('partials/admin-nav', { tab: car ? 'cars' : (presetCategory === 'w_drodze' ? 'new-transit' : 'new') }) %>
 
 <main class="container admin-main">
-  <h1><%= car ? 'Edytuj ogłoszenie' : (presetCategory === 'gotowe' ? 'Dodaj gotowe auto (od ręki)' : 'Dodaj nowe auto') %></h1>
+  <h1><%= car ? 'Edytuj ogłoszenie' : (presetCategory === 'w_drodze' ? 'Dodaj auto w drodze do Polski' : 'Dodaj auto od ręki') %></h1>
   <% if (error) { %><div class="form-note err"><%= error %></div><% } %>
 
   <form class="admin-form" method="POST" enctype="multipart/form-data"
@@ -63,8 +63,8 @@
     <div class="form-row">
       <label>Kategoria
         <select name="category">
-          <option value="gotowe" <%= presetCategory === 'gotowe' ? 'selected' : '' %>>Auta od ręki — już sprowadzone</option>
-          <option value="import" <%= presetCategory === 'import' ? 'selected' : '' %>>Auta na sprzedaż — oferta importowa</option>
+          <option value="gotowe" <%= presetCategory === 'gotowe' ? 'selected' : '' %>>Auta od ręki — na placu w Warszawie</option>
+          <option value="w_drodze" <%= presetCategory === 'w_drodze' ? 'selected' : '' %>>W drodze do Polski — w transporcie</option>
         </select>
       </label>
       <label>Status

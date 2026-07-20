@@ -11,19 +11,20 @@
 <section class="hero">
   <div class="container hero-inner">
     <div>
-      <p class="eyebrow">Import aut z USA i Kanady</p>
-      <h1>Kupimy oraz sprowadzimy dla Ciebie <span>wymarzone auto</span></h1>
-      <p class="hero-sub">Licytujemy na renomowanych aukcjach Copart i IAAI, organizujemy transport przez ocean
-        i załatwiamy wszystkie formalności. Ty wybierasz auto — my zajmujemy się resztą.</p>
+      <p class="eyebrow">Import i sprzedaż aut z USA i Kanady</p>
+      <h1>Amerykańskie auta <span>od ręki</span> w Warszawie</h1>
+      <p class="hero-sub">Sprowadzamy samochody z aukcji w USA i Kanadzie i sprzedajemy je na miejscu —
+        przy ul. Puławskiej 504 w Warszawie. Kolejne transporty są już w drodze. A jeśli nie znajdziesz
+        auta dla siebie, odezwij się — znajdziemy je dla Ciebie.</p>
       <div class="hero-actions">
         <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
-        <a href="/auta" class="btn btn-outline">Na zamówienie z USA</a>
-        <a href="#kontakt" class="btn btn-outline">Bezpłatna wycena</a>
+        <a href="/w-drodze" class="btn btn-outline">W drodze do Polski</a>
+        <a href="#kontakt" class="btn btn-outline">Znajdziemy auto dla Ciebie</a>
       </div>
       <div class="hero-stats">
         <div><strong>10+</strong><span>lat doświadczenia</span></div>
-        <div><strong>500+</strong><span>sprowadzonych aut</span></div>
-        <div><strong>6–8 tyg.</strong><span>średni czas importu</span></div>
+        <div><strong>500+</strong><span>sprzedanych aut</span></div>
+        <div><strong>Warszawa</strong><span>Puławska 504 — auta na placu</span></div>
       </div>
     </div>
     <div class="hero-visual" aria-hidden="true">
@@ -97,9 +98,9 @@
 <section class="section" id="uslugi">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow centered">Proces importu</p>
-      <h2 class="section-title">Jak działamy?</h2>
-      <p class="section-sub">Cały proces importu auta zza oceanu — bez wychodzenia z domu. Średnio 6–8 tygodni od licytacji do odbioru.</p>
+      <p class="eyebrow centered">Auto na zamówienie</p>
+      <h2 class="section-title">Nie znalazłeś auta w ofercie?</h2>
+      <p class="section-sub">Znajdziemy je dla Ciebie. Tak wygląda sprowadzenie auta na zamówienie — średnio 6–8 tygodni od licytacji do odbioru.</p>
     </div>
     <div class="steps-grid">
       <div class="step-card"><span class="step-num">01</span>
@@ -122,10 +123,10 @@
 
     <div class="cta-banner">
       <div>
-        <h3>Nie chcesz czekać 6–8 tygodni?</h3>
-        <p>Mamy też auta <strong>już sprowadzone</strong> — opłacone, przygotowane do rejestracji i gotowe do odbioru od ręki z naszego placu.</p>
+        <h3>Nie znalazłeś auta, które Ci się podoba?</h3>
+        <p>Odezwij się — <strong>znajdziemy je dla Ciebie</strong>. Napisz w formularzu, jakiego samochodu szukasz, a przygotujemy propozycje z aukcji i bezpłatną wycenę.</p>
       </div>
-      <a href="/gotowe" class="btn btn-primary">Zobacz auta od ręki</a>
+      <a href="#kontakt" class="btn btn-primary">Napisz do nas</a>
     </div>
   </div>
 </section>
@@ -135,7 +136,7 @@
     <div class="section-head">
       <p class="eyebrow centered">Aktualna oferta</p>
       <h2 class="section-title">Auta na sprzedaż</h2>
-      <p class="section-sub">Egzemplarze z oferty importowej oraz auta już sprowadzone, gotowe do odbioru od ręki — oznaczone znaczkiem „Od ręki".</p>
+      <p class="section-sub">Auta dostępne od ręki przy Puławskiej 504 w Warszawie oraz egzemplarze, które płyną już do Polski — oznaczone znaczkami „Od ręki" i „W drodze".</p>
     </div>
     <div class="cars-grid">
       <% featured.forEach(car => { %>
@@ -143,7 +144,7 @@
           <a class="car-card-link" href="/auta/<%= car.id %>">
             <div class="car-photo">
               <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
-              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
+              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } else if (car.category === 'w_drodze') { %><span class="badge-transit">W drodze</span><% } %>
               <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
             </div>
             <div class="car-info">
@@ -163,7 +164,7 @@
     </div>
     <div class="center hero-actions" style="justify-content:center">
       <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
-      <a href="/auta" class="btn btn-outline">Na zamówienie z USA</a>
+      <a href="/w-drodze" class="btn btn-outline">W drodze do Polski</a>
     </div>
   </div>
 </section>

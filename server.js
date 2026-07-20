@@ -96,37 +96,40 @@ function renderCarList(req, res, category, listing) {
   res.render('cars', { cars, brands, fuels, filters: { brand, fuel, sort, q }, listing });
 }
 
-// Na zamówienie z USA — oferta importowa (licytujemy i sprowadzamy)
-app.get('/auta', (req, res) => renderCarList(req, res, 'import', {
-  page: 'cars',
-  path: '/auta',
-  title: 'Na zamówienie z USA',
-  sub: 'Wybrane egzemplarze z aukcji Copart i IAAI, które możemy wylicytować i sprowadzić dla Ciebie w 6–8 tygodni.',
-  crossPath: '/gotowe',
-  crossLabel: 'Nie chcesz czekać? Zobacz auta od ręki →',
-  cta: {
-    title: 'Nie znalazłeś swojego modelu?',
-    text: 'Sprowadzimy każde auto z USA lub Kanady — napisz w formularzu, jakiego samochodu szukasz, a przygotujemy bezpłatną wycenę.',
-    button: 'Napisz do nas',
-    href: '/#kontakt'
-  }
-}));
-
-// Auta od ręki — już sprowadzone, na placu, gotowe do odbioru
+// Auta od ręki — sprowadzone, na placu w Warszawie, gotowe do odbioru
 app.get('/gotowe', (req, res) => renderCarList(req, res, 'gotowe', {
   page: 'ready',
   path: '/gotowe',
   title: 'Auta od ręki',
   sub: 'Samochody już sprowadzone, opłacone i przygotowane do rejestracji. Obejrzysz je i odbierzesz przy ul. Puławskiej 504 w Warszawie.',
-  crossPath: '/auta',
-  crossLabel: 'Szukasz konkretnego modelu? Zobacz auta na zamówienie z USA →',
+  crossPath: '/w-drodze',
+  crossLabel: 'Zobacz też auta, które są już w drodze do Polski →',
   cta: {
-    title: 'Chcesz obejrzeć auto na żywo?',
-    text: 'Wszystkie auta od ręki stoją przy ul. Puławskiej 504 w Warszawie. Umów oględziny i jazdę próbną — napisz w formularzu lub zadzwoń: +48 22 103 12 46.',
-    button: 'Umów oględziny',
+    title: 'Nie znalazłeś auta, które Ci się podoba?',
+    text: 'Odezwij się — znajdziemy je dla Ciebie. Licytujemy na aukcjach w USA i Kanadzie i sprowadzimy dokładnie taki egzemplarz, jakiego szukasz.',
+    button: 'Napisz do nas',
     href: '/#kontakt'
   }
 }));
+
+// Auta w drodze — kupione na aukcjach, w transporcie do Polski
+app.get('/w-drodze', (req, res) => renderCarList(req, res, 'w_drodze', {
+  page: 'transit',
+  path: '/w-drodze',
+  title: 'W drodze do Polski',
+  sub: 'Auta kupione przez nas na aukcjach w USA i Kanadzie, które płyną już do Polski. Zarezerwuj swoje, zanim trafi na plac.',
+  crossPath: '/gotowe',
+  crossLabel: 'Wolisz odebrać auto od razu? Zobacz auta od ręki →',
+  cta: {
+    title: 'Interesuje Cię auto z transportu?',
+    text: 'Napisz lub zadzwoń: +48 22 103 12 46 — podamy termin dostawy i zarezerwujemy auto dla Ciebie. A jeśli nie znalazłeś nic dla siebie, znajdziemy auto na zamówienie.',
+    button: 'Zapytaj o rezerwację',
+    href: '/#kontakt'
+  }
+}));
+
+// stary adres listy ogłoszeń
+app.get('/auta', (req, res) => res.redirect(301, '/gotowe'));
 
 app.get('/auta/:id', (req, res) => {
   const car = db.prepare('SELECT * FROM cars WHERE id = ?').get(req.params.id);
@@ -134,7 +137,7 @@ app.get('/auta/:id', (req, res) => {
   parseImages(car);
   const similar = db.prepare(`SELECT * FROM cars WHERE id != ? AND status != 'sprzedany' ORDER BY (brand = ?) DESC, created_at DESC LIMIT 3`)
     .all(car.id, car.brand).map(parseImages);
-  res.render('car-detail', { car, similar, page: car.category === 'gotowe' ? 'ready' : 'cars', sent: req.query.sent === '1' });
+  res.render('car-detail', { car, similar, page: car.category === 'w_drodze' ? 'transit' : 'ready', sent: req.query.sent === '1' });
 });
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -179,6 +182,7 @@ app.get('/admin', requireAdmin, (req, res) => {
   const stats = {
     cars: cars.length,
     ready: cars.filter(c => c.category === 'gotowe' && c.status !== 'sprzedany').length,
+    transit: cars.filter(c => c.category === 'w_drodze' && c.status !== 'sprzedany').length,
     available: cars.filter(c => c.status === 'dostepny').length,
     messages: db.prepare('SELECT COUNT(*) AS c FROM contact_messages WHERE is_read = 0').get().c,
     chats: db.prepare(`SELECT COUNT(DISTINCT session_id) AS c FROM chat_messages WHERE sender = 'visitor' AND is_read = 0`).get().c
@@ -187,7 +191,7 @@ app.get('/admin', requireAdmin, (req, res) => {
 });
 
 app.get('/admin/auta/nowe', requireAdmin, (req, res) => {
-  const presetCategory = req.query.kategoria === 'gotowe' ? 'gotowe' : 'import';
+  const presetCategory = ['w-drodze', 'w_drodze'].includes(req.query.kategoria) ? 'w_drodze' : 'gotowe';
   res.render('admin/car-form', { car: null, presetCategory, adminName: req.session.adminName, error: null });
 });
 
@@ -220,7 +224,7 @@ function carFromBody(body) {
     vin: (body.vin || '').trim() || null,
     description: (body.description || '').trim(),
     status: ['dostepny', 'zarezerwowany', 'sprzedany'].includes(body.status) ? body.status : 'dostepny',
-    category: body.category === 'gotowe' ? 'gotowe' : 'import',
+    category: ['gotowe', 'w_drodze'].includes(body.category) ? body.category : 'gotowe',
     featured: body.featured ? 1 : 0,
     source_url: (body.source_url || '').trim() || null
   };
@@ -271,7 +275,7 @@ app.get('/admin/import', requireAdmin, (req, res) => {
 
 app.post('/admin/import', requireAdmin, async (req, res) => {
   const url = (req.body.url || '').trim();
-  const category = req.body.category === 'import' ? 'import' : 'gotowe';
+  const category = req.body.category === 'w_drodze' ? 'w_drodze' : 'gotowe';
   const render = (data) => res.render('admin/import', { adminName: req.session.adminName, result: null, error: null, ...data });
   if (!/^https?:\/\/([a-z0-9-]+\.)*otomoto\.pl\//i.test(url)) {
     return render({ error: 'Podaj poprawny adres z domeny otomoto.pl' });
