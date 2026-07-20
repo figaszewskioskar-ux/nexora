@@ -35,7 +35,7 @@
           <td><img class="thumb" src="<%= car.imageList[0] %>" alt=""></td>
           <td>
             <strong><%= car.title %></strong><br>
-            <small><%= car.year || '—' %> · <%= fmtKm(car.mileage) %> · <%= car.fuel || '—' %><%= car.featured ? ' · ⭐ wyróżnione' : '' %></small>
+            <small><%= car.year || '—' %> · <%= fmtKm(car.mileage) %> · <%= car.fuel || '—' %><%= car.featured ? ' · wyróżnione' : '' %></small>
           </td>
           <td><%= fmtPrice(car.price, car.currency) %></td>
           <td><span class="status <%= car.category === 'gotowe' ? 'cat-ready' : 'cat-import' %>"><%= car.category === 'gotowe' ? 'Od ręki' : 'Import' %></span></td>

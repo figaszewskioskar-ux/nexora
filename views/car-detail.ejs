@@ -49,7 +49,7 @@
           <a class="btn btn-outline btn-block" href="<%= car.source_url %>" target="_blank" rel="noopener">Zobacz ogłoszenie na Otomoto</a>
         <% } %>
         <a class="btn btn-primary btn-block" href="#zapytaj">Zapytaj o to auto</a>
-        <a class="btn btn-outline btn-block" href="tel:<%= contactPhone.replace(/\s/g,'') %>">📞 <%= contactPhone %></a>
+        <a class="btn btn-outline btn-block" href="tel:<%= contactPhone.replace(/\s/g,'') %>">Zadzwoń: <%= contactPhone %></a>
       </aside>
     </div>
 
@@ -62,7 +62,7 @@
 
     <div class="detail-contact" id="zapytaj">
       <h2>Zapytaj o to auto</h2>
-      <% if (sent) { %><div class="form-note ok">✅ Dziękujemy! Twoje zapytanie zostało wysłane.</div><% } %>
+      <% if (sent) { %><div class="form-note ok">Dziękujemy! Twoje zapytanie zostało wysłane — odezwiemy się wkrótce.</div><% } %>
       <form method="POST" action="/kontakt">
         <input type="hidden" name="car_id" value="<%= car.id %>">
         <input type="hidden" name="redirect" value="/auta/<%= car.id %>">

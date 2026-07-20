@@ -17,8 +17,8 @@
         i załatwiamy wszystkie formalności. Ty wybierasz auto — my zajmujemy się resztą.</p>
       <div class="hero-actions">
         <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
-        <a href="/auta" class="btn btn-outline">Auta na sprzedaż</a>
-        <a href="#kontakt" class="btn btn-outline">Zamów auto z USA</a>
+        <a href="/auta" class="btn btn-outline">Na zamówienie z USA</a>
+        <a href="#kontakt" class="btn btn-outline">Bezpłatna wycena</a>
       </div>
       <div class="hero-stats">
         <div><strong>10+</strong><span>lat doświadczenia</span></div>
@@ -53,6 +53,8 @@
           <line x1="48" y1="272" x2="166" y2="272" stroke="#16294a" stroke-width="7" opacity="0.5"/>
           <line x1="10" y1="294" x2="120" y2="294" stroke="#c8102e" stroke-width="7" opacity="0.35"/>
         </g>
+        <!-- cień pod autem -->
+        <ellipse cx="292" cy="368" rx="232" ry="11" fill="#131a26" opacity="0.1"/>
         <!-- muscle car — sylwetka -->
         <g>
           <path fill="url(#hvBody)" d="M96 306
@@ -63,6 +65,8 @@
             c-4 -22 -22 -37 -45 -37 c-23 0 -41 15 -45 37 l-130 0
             c-4 -22 -22 -37 -45 -37 c-23 0 -41 15 -45 37 l-28 0
             c-7 0 -12 -5 -12 -12 z"/>
+          <!-- refleks na masce -->
+          <path fill="#ffffff" opacity="0.07" d="M126 300 c20 -24 48 -38 82 -41 l180 -6 c30 2 54 12 72 30 l-8 4 -280 6 z"/>
           <!-- szyby -->
           <path fill="#dfe6f0" d="M170 263 c14 -18 32 -29 56 -31 l56 -2 -6 33 z"/>
           <path fill="#c7d2e2" d="M292 231 c24 2 44 11 60 26 l6 8 -68 -2 z"/>
@@ -153,7 +157,7 @@
     </div>
     <div class="center hero-actions" style="justify-content:center">
       <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
-      <a href="/auta" class="btn btn-outline">Cała oferta importowa</a>
+      <a href="/auta" class="btn btn-outline">Na zamówienie z USA</a>
     </div>
   </div>
 </section>
@@ -258,7 +262,7 @@
 <script>
   const params = new URLSearchParams(location.search);
   const note = document.getElementById('formNote');
-  if (params.get('sent') === '1') { note.textContent = '✅ Dziękujemy! Twoja wiadomość została wysłana — odezwiemy się wkrótce.'; note.className = 'form-note ok'; }
+  if (params.get('sent') === '1') { note.textContent = 'Dziękujemy! Twoja wiadomość została wysłana — odezwiemy się wkrótce.'; note.className = 'form-note ok'; }
   if (params.get('error') === '1') { note.textContent = 'Uzupełnij wymagane pola: imię i nazwisko, e-mail oraz treść wiadomości.'; note.className = 'form-note err'; }
 </script>
 </body>

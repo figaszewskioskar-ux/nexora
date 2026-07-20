@@ -61,6 +61,14 @@
     </div>
 
     <p class="cross-link"><a href="<%= listing.crossPath %>"><%= listing.crossLabel %></a></p>
+
+    <div class="cta-banner">
+      <div>
+        <h3><%= listing.cta.title %></h3>
+        <p><%= listing.cta.text %></p>
+      </div>
+      <a href="<%= listing.cta.href %>" class="btn btn-primary"><%= listing.cta.button %></a>
+    </div>
   </div>
 </section>
 

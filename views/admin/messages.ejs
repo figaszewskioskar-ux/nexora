@@ -21,7 +21,7 @@
         <div class="message-contact">
           <% if (m.email) { %><a href="mailto:<%= m.email %>"><%= m.email %></a><% } %>
           <% if (m.phone) { %><a href="tel:<%= m.phone %>"><%= m.phone %></a><% } %>
-          <% if (m.car_title) { %><span class="message-car">🚗 <%= m.car_title %></span><% } %>
+          <% if (m.car_title) { %><span class="message-car">Dotyczy: <%= m.car_title %></span><% } %>
         </div>
         <p><%= m.message %></p>
         <form method="POST" action="/admin/wiadomosci/<%= m.id %>/usun" onsubmit="return confirm('Usunąć wiadomość?')">

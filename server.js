@@ -96,14 +96,20 @@ function renderCarList(req, res, category, listing) {
   res.render('cars', { cars, brands, fuels, filters: { brand, fuel, sort, q }, listing });
 }
 
-// Auta na sprzedaż — oferta importowa (licytujemy i sprowadzamy)
+// Na zamówienie z USA — oferta importowa (licytujemy i sprowadzamy)
 app.get('/auta', (req, res) => renderCarList(req, res, 'import', {
   page: 'cars',
   path: '/auta',
-  title: 'Auta na sprzedaż',
-  sub: 'Oferta importowa — wybrane egzemplarze z aukcji w USA i Kanadzie. Licytujemy i sprowadzamy dla Ciebie.',
+  title: 'Na zamówienie z USA',
+  sub: 'Wybrane egzemplarze z aukcji Copart i IAAI, które możemy wylicytować i sprowadzić dla Ciebie w 6–8 tygodni.',
   crossPath: '/gotowe',
-  crossLabel: 'Nie chcesz czekać? Zobacz auta od ręki →'
+  crossLabel: 'Nie chcesz czekać? Zobacz auta od ręki →',
+  cta: {
+    title: 'Nie znalazłeś swojego modelu?',
+    text: 'Sprowadzimy każde auto z USA lub Kanady — napisz w formularzu, jakiego samochodu szukasz, a przygotujemy bezpłatną wycenę.',
+    button: 'Napisz do nas',
+    href: '/#kontakt'
+  }
 }));
 
 // Auta od ręki — już sprowadzone, na placu, gotowe do odbioru
@@ -111,9 +117,15 @@ app.get('/gotowe', (req, res) => renderCarList(req, res, 'gotowe', {
   page: 'ready',
   path: '/gotowe',
   title: 'Auta od ręki',
-  sub: 'Samochody już sprowadzone, opłacone i przygotowane do rejestracji. Odbiór od ręki z naszego placu.',
+  sub: 'Samochody już sprowadzone, opłacone i przygotowane do rejestracji. Do odbioru od ręki z naszego placu.',
   crossPath: '/auta',
-  crossLabel: 'Szukasz czegoś innego? Zobacz ofertę importową →'
+  crossLabel: 'Szukasz konkretnego modelu? Zobacz auta na zamówienie z USA →',
+  cta: {
+    title: 'Chcesz obejrzeć auto na żywo?',
+    text: 'Umów się na oględziny i jazdę próbną — napisz w formularzu lub zadzwoń, a przygotujemy auto na Twoją wizytę.',
+    button: 'Umów oględziny',
+    href: '/#kontakt'
+  }
 }));
 
 app.get('/auta/:id', (req, res) => {
