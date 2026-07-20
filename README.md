@@ -35,8 +35,8 @@ ADMIN_USER=twojlogin ADMIN_PASSWORD=silne-haslo npm start
 | `ADMIN_USER` / `ADMIN_PASSWORD` | Konto admina (tylko pierwszy start) | `admin` / `admin123` |
 | `SESSION_SECRET` | Sekret sesji (ustaw na produkcji!) | losowy przy starcie |
 | `CONTACT_EMAIL` | E-mail w stopce i sekcji kontakt | `contact@sellora.store` |
-| `CONTACT_PHONE` | Telefon kontaktowy | `+48 600 000 000` |
-| `CONTACT_ADDRESS` | Adres firmy | przykładowy |
+| `CONTACT_PHONE` | Telefon kontaktowy | `+48 22 103 12 46` |
+| `CONTACT_ADDRESS` | Adres placu z autami | `ul. Puławska 504, Warszawa` |
 
 ## Funkcje
 

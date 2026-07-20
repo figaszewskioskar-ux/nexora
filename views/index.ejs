@@ -139,20 +139,26 @@
     </div>
     <div class="cars-grid">
       <% featured.forEach(car => { %>
-        <a class="car-card" href="/auta/<%= car.id %>">
-          <div class="car-photo">
-            <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
-            <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
-            <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
-          </div>
-          <div class="car-info">
-            <h3><%= car.title %></h3>
-            <div class="car-meta">
-              <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span>
+        <div class="car-card">
+          <a class="car-card-link" href="/auta/<%= car.id %>">
+            <div class="car-photo">
+              <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
+              <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
             </div>
-            <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+            <div class="car-info">
+              <h3><%= car.title %></h3>
+              <div class="car-meta">
+                <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span>
+              </div>
+              <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+            </div>
+          </a>
+          <div class="car-contact">
+            <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a>
+            <a href="/auta/<%= car.id %>#zapytaj" class="car-contact-msg">Wyślij wiadomość</a>
           </div>
-        </a>
+        </div>
       <% }) %>
     </div>
     <div class="center hero-actions" style="justify-content:center">
@@ -239,7 +245,7 @@
       <div class="contact-details">
         <p><strong>Telefon</strong> <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a></p>
         <p><strong>E-mail</strong> <a href="mailto:<%= contactEmail %>"><%= contactEmail %></a></p>
-        <p><strong>Adres</strong> <%= contactAddress %></p>
+        <p><strong>Auta od ręki obejrzysz</strong> <%= contactAddress %></p>
         <p><strong>Godziny otwarcia</strong> pon–pt 9:00–18:00, sob 10:00–14:00</p>
       </div>
     </div>

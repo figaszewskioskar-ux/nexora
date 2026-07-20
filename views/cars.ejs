@@ -43,20 +43,26 @@
 
     <div class="cars-grid">
       <% cars.forEach(car => { %>
-        <a class="car-card" href="/auta/<%= car.id %>">
-          <div class="car-photo">
-            <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
-            <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
-            <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
-          </div>
-          <div class="car-info">
-            <h3><%= car.title %></h3>
-            <div class="car-meta">
-              <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span><span><%= car.transmission || '—' %></span>
+        <div class="car-card">
+          <a class="car-card-link" href="/auta/<%= car.id %>">
+            <div class="car-photo">
+              <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
+              <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
             </div>
-            <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+            <div class="car-info">
+              <h3><%= car.title %></h3>
+              <div class="car-meta">
+                <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span><span><%= car.transmission || '—' %></span>
+              </div>
+              <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+            </div>
+          </a>
+          <div class="car-contact">
+            <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a>
+            <a href="/auta/<%= car.id %>#zapytaj" class="car-contact-msg">Wyślij wiadomość</a>
           </div>
-        </a>
+        </div>
       <% }) %>
     </div>
 

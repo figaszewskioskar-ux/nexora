@@ -111,14 +111,12 @@ h1, h2, h3, .display {
   transition: opacity 0.45s ease, visibility 0.45s ease;
 }
 #preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
-.preloader-inner { display: flex; flex-direction: column; align-items: center; gap: 0.9rem; }
-.preloader-logo { animation: preloader-pop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
-.preloader-name {
-  font-family: var(--display); text-transform: uppercase; letter-spacing: 0.12em;
-  font-weight: 700; font-size: 1.5rem; color: #fff;
-  animation: preloader-fade 0.6s 0.15s ease both;
+.preloader-inner { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
+.preloader-logo {
+  width: 230px; height: auto;
+  animation: preloader-pop 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.45));
 }
-.preloader-name em { font-style: normal; color: #ff516a; }
 .preloader-bar {
   width: 180px; height: 3px; background: rgba(255, 255, 255, 0.14);
   border-radius: 2px; overflow: hidden;
@@ -161,9 +159,10 @@ h1, h2, h3, .display {
   border-bottom: 1px solid var(--line);
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding: 0.75rem 1.4rem; }
-.brand { display: flex; align-items: center; gap: 0.7rem; }
+.brand { display: flex; align-items: center; gap: 0.85rem; }
 .brand-logo { width: 44px; height: 44px; }
-.brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+.brand-wordmark { height: 52px; width: auto; }
+.brand-wordmark.sm { height: 42px; }
 .brand-name {
   font-family: var(--display); font-size: 1.55rem; font-weight: 700;
   letter-spacing: 0.05em; text-transform: uppercase; color: var(--navy);
@@ -171,7 +170,8 @@ h1, h2, h3, .display {
 .brand-name em { font-style: normal; color: var(--red); }
 .brand-tagline {
   font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em;
-  color: var(--steel); font-weight: 600;
+  color: var(--steel); font-weight: 600; max-width: 130px; line-height: 1.5;
+  border-left: 2px solid var(--line); padding-left: 0.85rem;
 }
 .main-nav { display: flex; gap: 1.7rem; align-items: center; }
 .main-nav a {
@@ -274,6 +274,18 @@ h1, h2, h3, .display {
   display: flex; flex-direction: column;
 }
 .car-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.car-card-link { display: flex; flex-direction: column; flex: 1; }
+.car-contact {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.8rem;
+  border-top: 1px solid var(--line); padding: 0.7rem 1.3rem; font-size: 0.9rem;
+}
+.car-contact a { font-weight: 700; color: var(--navy); }
+.car-contact a:hover { color: var(--red); }
+.car-contact .car-contact-msg {
+  color: var(--red); font-family: var(--display); text-transform: uppercase;
+  letter-spacing: 0.07em; font-size: 0.95rem;
+}
+.car-contact .car-contact-msg:hover { text-decoration: underline; }
 .car-photo { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #eceae5; }
 .car-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
 .car-card:hover .car-photo img { transform: scale(1.045); }
@@ -429,6 +441,18 @@ input:focus, select:focus, textarea:focus {
 .spec-table th, .spec-table td { text-align: left; padding: 0.5rem 0.2rem; border-bottom: 1px solid var(--line); font-size: 0.93rem; }
 .spec-table th { color: var(--steel); font-weight: 600; width: 45%; }
 .spec-table td { font-weight: 600; color: var(--ink); }
+.seller-box {
+  margin-top: 1.3rem; background: var(--paper); border: 1px solid var(--line);
+  border-left: 4px solid var(--red); border-radius: var(--radius); padding: 1.1rem 1.2rem;
+}
+.seller-box h3 { font-size: 1.15rem; color: var(--navy); margin-bottom: 0.4rem; }
+.seller-name { color: var(--steel); font-size: 0.88rem; margin-bottom: 0.55rem; }
+.seller-box p { font-size: 0.92rem; margin-bottom: 0.25rem; }
+.seller-box strong { color: var(--navy); }
+.seller-box a { color: var(--red); font-weight: 700; }
+.seller-box a:hover { text-decoration: underline; }
+.seller-hours { color: var(--steel); font-size: 0.85rem; }
+
 .detail-description { margin-top: 3.2rem; max-width: 820px; }
 .detail-description h2, .detail-contact h2 { font-size: 1.6rem; color: var(--navy); margin-bottom: 1rem; }
 .detail-description p { color: var(--steel); white-space: pre-line; }
@@ -443,6 +467,7 @@ input:focus, select:focus, textarea:focus {
 .site-footer .flag-stripe { position: absolute; top: 0; left: 0; right: 0; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1.2fr; gap: 2.6rem; padding: 3.4rem 1.4rem 2.2rem; }
 .footer-brand-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.9rem; }
+.footer-wordmark { height: 58px; width: auto; }
 .footer-brand { font-size: 1.5rem; color: #fff; }
 .site-footer p { font-size: 0.93rem; }
 .site-footer h4 {

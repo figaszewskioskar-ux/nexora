@@ -65,8 +65,8 @@ app.locals.fmtPrice = fmtPrice;
 app.locals.fmtKm = fmtKm;
 app.locals.siteName = 'Level Auto';
 app.locals.contactEmail = process.env.CONTACT_EMAIL || 'contact@sellora.store';
-app.locals.contactPhone = process.env.CONTACT_PHONE || '+48 600 000 000';
-app.locals.contactAddress = process.env.CONTACT_ADDRESS || 'ul. Przykładowa 12, 05-152 Czosnów';
+app.locals.contactPhone = process.env.CONTACT_PHONE || '+48 22 103 12 46';
+app.locals.contactAddress = process.env.CONTACT_ADDRESS || 'ul. Puławska 504, Warszawa';
 
 // =====================================================================
 // Strony publiczne
@@ -117,12 +117,12 @@ app.get('/gotowe', (req, res) => renderCarList(req, res, 'gotowe', {
   page: 'ready',
   path: '/gotowe',
   title: 'Auta od ręki',
-  sub: 'Samochody już sprowadzone, opłacone i przygotowane do rejestracji. Do odbioru od ręki z naszego placu.',
+  sub: 'Samochody już sprowadzone, opłacone i przygotowane do rejestracji. Obejrzysz je i odbierzesz przy ul. Puławskiej 504 w Warszawie.',
   crossPath: '/auta',
   crossLabel: 'Szukasz konkretnego modelu? Zobacz auta na zamówienie z USA →',
   cta: {
     title: 'Chcesz obejrzeć auto na żywo?',
-    text: 'Umów się na oględziny i jazdę próbną — napisz w formularzu lub zadzwoń, a przygotujemy auto na Twoją wizytę.',
+    text: 'Wszystkie auta od ręki stoją przy ul. Puławskiej 504 w Warszawie. Umów oględziny i jazdę próbną — napisz w formularzu lub zadzwoń: +48 22 103 12 46.',
     button: 'Umów oględziny',
     href: '/#kontakt'
   }
