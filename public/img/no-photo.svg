@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
-  <rect width="800" height="500" fill="#15151a"/>
-  <path d="M140 330 c30 -60 70 -90 150 -95 l60 -40 c60 -30 200 -30 250 5 l50 35 c60 10 90 40 95 90 l-20 10 h-585 z" fill="#2a2a35"/>
-  <circle cx="255" cy="345" r="38" fill="#0c0c10" stroke="#3a3a44" stroke-width="10"/>
-  <circle cx="565" cy="345" r="38" fill="#0c0c10" stroke="#3a3a44" stroke-width="10"/>
-  <text x="400" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#9a9aa5">Brak zdjęcia</text>
+  <rect width="800" height="500" fill="#eceae5"/>
+  <path d="M150 330 c4 -26 18 -42 48 -49 l44 -9 c22 -30 52 -49 90 -53 l112 -4 c40 2 74 17 100 44 l26 27 58 11 c28 6 42 19 45 40 l-3 14 c-1 6 -6 10 -13 10 l-32 0 c-6 -28 -28 -46 -56 -46 c-28 0 -50 18 -56 46 l-160 0 c-6 -28 -28 -46 -56 -46 c-28 0 -50 18 -56 46 l-36 0 c-9 0 -15 -6 -15 -15 z" fill="#cfccc4"/>
+  <circle cx="297" cy="360" r="40" fill="#b8b4aa"/><circle cx="297" cy="360" r="17" fill="#eceae5"/>
+  <circle cx="569" cy="360" r="40" fill="#b8b4aa"/><circle cx="569" cy="360" r="17" fill="#eceae5"/>
+  <text x="400" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#5c6575">Brak zdjęcia</text>
 </svg>

@@ -61,15 +61,15 @@
     <div class="detail-contact" id="zapytaj">
       <h2>Zapytaj o to auto</h2>
       <% if (sent) { %><div class="form-note ok">✅ Dziękujemy! Twoje zapytanie zostało wysłane.</div><% } %>
-      <form class="contact-form" method="POST" action="/kontakt">
+      <form method="POST" action="/kontakt">
         <input type="hidden" name="car_id" value="<%= car.id %>">
         <input type="hidden" name="redirect" value="/auta/<%= car.id %>">
         <div class="form-row">
-          <label>Imię i nazwisko *<input type="text" name="name" required maxlength="120"></label>
-          <label>Telefon<input type="tel" name="phone" maxlength="40"></label>
+          <label>Imię i nazwisko *<input type="text" name="name" required maxlength="120" autocomplete="name"></label>
+          <label>Telefon<input type="tel" name="phone" maxlength="40" autocomplete="tel"></label>
         </div>
-        <label>E-mail<input type="email" name="email" maxlength="160"></label>
-        <label>Wiadomość *<textarea name="message" rows="4" required maxlength="4000">Dzień dobry, proszę o więcej informacji o: <%= car.title %></textarea></label>
+        <label>E-mail *<input type="email" name="email" required maxlength="160" autocomplete="email"></label>
+        <label>Treść wiadomości *<textarea name="message" rows="4" required maxlength="4000">Dzień dobry, proszę o więcej informacji o: <%= car.title %></textarea></label>
         <button type="submit" class="btn btn-primary">Wyślij zapytanie</button>
       </form>
     </div>

@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 CREATE TABLE IF NOT EXISTS chat_sessions (
   id TEXT PRIMARY KEY,
   visitor_name TEXT DEFAULT 'Gość',
+  visitor_email TEXT,
   created_at TEXT DEFAULT (datetime('now')),
   last_activity TEXT DEFAULT (datetime('now'))
 );
@@ -70,6 +71,12 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   FOREIGN KEY (session_id) REFERENCES chat_sessions(id)
 );
 `);
+
+// --- Migracja: kolumna visitor_email dla baz utworzonych starszą wersją ---
+const sessionCols = db.prepare(`PRAGMA table_info(chat_sessions)`).all().map(c => c.name);
+if (!sessionCols.includes('visitor_email')) {
+  db.exec('ALTER TABLE chat_sessions ADD COLUMN visitor_email TEXT');
+}
 
 // --- Seed admin user ---
 const adminExists = db.prepare('SELECT COUNT(*) AS c FROM users').get().c > 0;
@@ -90,14 +97,18 @@ if (carsCount === 0) {
   const placeholder = (name, accent) => {
     const file = `seed-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.svg`;
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#15151a"/><stop offset="1" stop-color="#26262e"/></linearGradient></defs>
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#fdfdfc"/><stop offset="1" stop-color="#eceae5"/></linearGradient></defs>
 <rect width="800" height="500" fill="url(#g)"/>
-<path d="M140 330 c30 -60 70 -90 150 -95 l60 -40 c60 -30 200 -30 250 5 l50 35 c60 10 90 40 95 90 l-20 10 h-585 z" fill="${accent}" opacity="0.85"/>
-<circle cx="255" cy="345" r="38" fill="#0c0c10" stroke="#3a3a44" stroke-width="10"/>
-<circle cx="565" cy="345" r="38" fill="#0c0c10" stroke="#3a3a44" stroke-width="10"/>
-<text x="400" y="440" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="bold" fill="#ffffff">${name}</text>
-<text x="400" y="472" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#9a9aa5">LEVEL AUTO</text>
+<line x1="60" y1="212" x2="230" y2="212" stroke="#c8102e" stroke-width="8" stroke-linecap="round" opacity="0.75"/>
+<line x1="95" y1="238" x2="245" y2="238" stroke="#16294a" stroke-width="8" stroke-linecap="round" opacity="0.35"/>
+<path d="M150 330 c4 -26 18 -42 48 -49 l44 -9 c22 -30 52 -49 90 -53 l112 -4 c40 2 74 17 100 44 l26 27 58 11 c28 6 42 19 45 40 l-3 14 c-1 6 -6 10 -13 10 l-32 0 c-6 -28 -28 -46 -56 -46 c-28 0 -50 18 -56 46 l-160 0 c-6 -28 -28 -46 -56 -46 c-28 0 -50 18 -56 46 l-36 0 c-9 0 -15 -6 -15 -15 z" fill="${accent}"/>
+<path d="M256 267 c17 -22 40 -35 68 -37 l66 -3 -8 41 z" fill="#dfe6f0"/>
+<path d="M402 228 c28 3 52 14 71 32 l7 9 -80 -2 z" fill="#c7d2e2"/>
+<circle cx="297" cy="360" r="40" fill="#131a26"/><circle cx="297" cy="360" r="17" fill="#eceae5"/><circle cx="297" cy="360" r="7" fill="#c8102e"/>
+<circle cx="569" cy="360" r="40" fill="#131a26"/><circle cx="569" cy="360" r="17" fill="#eceae5"/><circle cx="569" cy="360" r="7" fill="#c8102e"/>
+<text x="400" y="452" text-anchor="middle" font-family="Arial Narrow, Arial, sans-serif" font-size="34" font-weight="bold" fill="#16294a" letter-spacing="2">${name.toUpperCase()}</text>
+<text x="400" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#5c6575" letter-spacing="4">LEVEL AUTO &#183; USA &amp; CANADA</text>
 </svg>`;
     fs.writeFileSync(path.join(imgDir, file), svg);
     return `/uploads/${file}`;

@@ -105,9 +105,11 @@ app.get('/auta/:id', (req, res) => {
   res.render('car-detail', { car, similar, page: 'cars', sent: req.query.sent === '1' });
 });
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 app.post('/kontakt', (req, res) => {
   const { name, email, phone, message, car_id, redirect } = req.body;
-  if (!name || !message) {
+  if (!name || !message || !EMAIL_RE.test(email || '')) {
     return res.redirect((redirect || '/') + '?error=1#kontakt');
   }
   db.prepare('INSERT INTO contact_messages (name, email, phone, message, car_id) VALUES (?, ?, ?, ?, ?)')
@@ -313,13 +315,34 @@ io.on('connection', (socket) => {
 
   if (isAdmin) socket.join('admins');
 
-  socket.on('chat:join', ({ sessionId, name }) => {
-    let id = sessionId;
-    const exists = id && db.prepare('SELECT id FROM chat_sessions WHERE id = ?').get(id);
-    if (!exists) {
+  socket.on('chat:join', (payload = {}) => {
+    let id = payload.sessionId;
+
+    if (id) {
+      // Wznowienie istniejącej rozmowy
+      if (!db.prepare('SELECT id FROM chat_sessions WHERE id = ?').get(id)) {
+        return socket.emit('chat:error', { message: 'session-not-found' });
+      }
+    } else {
+      // Nowa rozmowa — imię i nazwisko, e-mail oraz treść są wymagane
+      const name = String(payload.name || '').trim().slice(0, 80);
+      const email = String(payload.email || '').trim().slice(0, 160);
+      const firstMessage = String(payload.firstMessage || '').trim().slice(0, 2000);
+      if (name.length < 3 || !name.includes(' ')) {
+        return socket.emit('chat:error', { message: 'Podaj imię i nazwisko.' });
+      }
+      if (!EMAIL_RE.test(email)) {
+        return socket.emit('chat:error', { message: 'Podaj poprawny adres e-mail.' });
+      }
+      if (!firstMessage) {
+        return socket.emit('chat:error', { message: 'Napisz treść wiadomości.' });
+      }
       id = crypto.randomUUID();
-      db.prepare('INSERT INTO chat_sessions (id, visitor_name) VALUES (?, ?)').run(id, (name || 'Gość').slice(0, 60));
+      db.prepare('INSERT INTO chat_sessions (id, visitor_name, visitor_email) VALUES (?, ?, ?)').run(id, name, email);
+      db.prepare('INSERT INTO chat_messages (session_id, sender, body, is_read) VALUES (?, ?, ?, 0)').run(id, 'visitor', firstMessage);
+      io.to('admins').emit('admin:chat-activity', { sessionId: id, sender: 'visitor', body: firstMessage, visitorName: name, visitorEmail: email, created_at: new Date().toISOString() });
     }
+
     socket.join(`chat:${id}`);
     socket.data.chatSessionId = id;
     const history = db.prepare('SELECT sender, body, created_at FROM chat_messages WHERE session_id = ? ORDER BY created_at ASC LIMIT 100').all(id);
@@ -334,7 +357,11 @@ io.on('connection', (socket) => {
     const sender = isAdmin ? 'admin' : 'visitor';
     db.prepare('INSERT INTO chat_messages (session_id, sender, body, is_read) VALUES (?, ?, ?, ?)').run(id, sender, body, isAdmin ? 1 : 0);
     db.prepare(`UPDATE chat_sessions SET last_activity = datetime('now') WHERE id = ?`).run(id);
-    const payload = { sessionId: id, sender, body, created_at: new Date().toISOString() };
+    const chatSess = db.prepare('SELECT visitor_name, visitor_email FROM chat_sessions WHERE id = ?').get(id);
+    const payload = {
+      sessionId: id, sender, body, created_at: new Date().toISOString(),
+      visitorName: chatSess.visitor_name, visitorEmail: chatSess.visitor_email
+    };
     io.to(`chat:${id}`).emit('chat:message', payload);
     io.to('admins').emit('admin:chat-activity', payload);
   });

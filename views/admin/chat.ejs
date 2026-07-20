@@ -16,6 +16,7 @@
         <button class="chat-session" data-session="<%= s.id %>">
           <strong><%= s.visitor_name %></strong>
           <% if (s.unread) { %><span class="chat-badge inline"><%= s.unread %></span><% } %>
+          <% if (s.visitor_email) { %><small class="chat-mail"><%= s.visitor_email %></small><% } %>
           <small><%= s.last_message ? s.last_message.slice(0, 60) : '(brak wiadomości)' %></small>
           <small class="chat-time"><%= s.last_activity %></small>
         </button>
