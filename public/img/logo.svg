@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <clipPath id="shield">
+      <path d="M32 3 L57 11 V33 C57 48 46.5 57 32 61.5 C17.5 57 7 48 7 33 V11 Z"/>
+    </clipPath>
+    <linearGradient id="shieldBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d3359"/>
+      <stop offset="1" stop-color="#0f1d36"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 3 L57 11 V33 C57 48 46.5 57 32 61.5 C17.5 57 7 48 7 33 V11 Z" fill="url(#shieldBg)"/>
+  <g clip-path="url(#shield)">
+    <g transform="rotate(-14 32 46)">
+      <rect x="-10" y="36" width="84" height="6.5" fill="#c8102e"/>
+      <rect x="-10" y="46" width="84" height="6.5" fill="#f4f2ee"/>
+      <rect x="-10" y="56" width="84" height="6.5" fill="#c8102e"/>
+      <rect x="-10" y="66" width="84" height="6.5" fill="#f4f2ee"/>
+    </g>
+  </g>
+  <path d="M32 3 L57 11 V33 C57 48 46.5 57 32 61.5 C17.5 57 7 48 7 33 V11 Z"
+        fill="none" stroke="#f4f2ee" stroke-width="1.6" opacity="0.9"/>
+  <path d="M32 10.5 l3.3 6.7 7.4 1.1 -5.35 5.2 1.25 7.35 -6.6 -3.45 -6.6 3.45 1.25 -7.35 -5.35 -5.2 7.4 -1.1 z" fill="#f4f2ee"/>
+</svg>

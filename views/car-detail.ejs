@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('partials/head') %>
+  <title><%= car.title %> — Level Auto</title>
+  <meta name="description" content="<%= car.title %> — <%= fmtPrice(car.price, car.currency) %>. Auto z oferty Level Auto.">
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="section detail-section">
+  <div class="container">
+    <a href="<%= car.category === 'w_drodze' ? '/w-drodze' : '/gotowe' %>" class="back-link">← Wróć do listy aut</a>
+    <div class="detail-grid">
+      <div class="gallery">
+        <div class="gallery-main">
+          <img id="galleryMain" src="<%= car.imageList[0] %>" alt="<%= car.title %>">
+          <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } else if (car.category === 'w_drodze') { %><span class="badge-transit">W drodze</span><% } %>
+          <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
+          <% if (car.status === 'sprzedany') { %><span class="ribbon sold">Sprzedany</span><% } %>
+        </div>
+        <% if (car.imageList.length > 1) { %>
+          <div class="gallery-thumbs">
+            <% car.imageList.forEach((img, i) => { %>
+              <img src="<%= img %>" alt="Zdjęcie <%= i + 1 %>" class="<%= i === 0 ? 'active' : '' %>"
+                   onclick="document.getElementById('galleryMain').src=this.src;document.querySelectorAll('.gallery-thumbs img').forEach(t=>t.classList.remove('active'));this.classList.add('active')">
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+
+      <aside class="detail-side">
+        <h1><%= car.title %></h1>
+        <div class="detail-price"><%= fmtPrice(car.price, car.currency) %></div>
+        <table class="spec-table">
+          <tr><th>Dostępność</th><td><%= car.category === 'gotowe' ? 'Od ręki — auto w Warszawie' : 'W drodze do Polski — możliwa rezerwacja' %></td></tr>
+          <% const specs = [
+            ['Marka', car.brand], ['Model', car.model], ['Rocznik', car.year],
+            ['Przebieg', car.mileage ? fmtKm(car.mileage) : null], ['Paliwo', car.fuel],
+            ['Skrzynia biegów', car.transmission], ['Moc', car.power ? car.power + ' KM' : null],
+            ['Pojemność', car.engine_capacity ? car.engine_capacity + ' cm³' : null],
+            ['Nadwozie', car.body_type], ['Kolor', car.color], ['VIN', car.vin]
+          ]; %>
+          <% specs.forEach(([label, value]) => { if (value) { %>
+            <tr><th><%= label %></th><td><%= value %></td></tr>
+          <% } }) %>
+        </table>
+        <% if (car.source_url) { %>
+          <a class="btn btn-outline btn-block" href="<%= car.source_url %>" target="_blank" rel="noopener">Zobacz ogłoszenie na Otomoto</a>
+        <% } %>
+        <a class="btn btn-primary btn-block" href="#zapytaj">Wyślij wiadomość</a>
+        <a class="btn btn-outline btn-block" href="tel:<%= contactPhone.replace(/\s/g,'') %>">Zadzwoń: <%= contactPhone %></a>
+
+        <div class="seller-box">
+          <h3>Kontakt w sprawie tego auta</h3>
+          <p class="seller-name">Level Auto — import aut z USA i Kanady</p>
+          <p><strong>Telefon:</strong> <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a></p>
+          <p><strong>E-mail:</strong> <a href="mailto:<%= contactEmail %>"><%= contactEmail %></a></p>
+          <% if (car.category === 'gotowe') { %>
+            <p><strong>Auto obejrzysz:</strong> <%= contactAddress %></p>
+            <p class="seller-hours">pon–pt 9:00–18:00, sob 10:00–14:00</p>
+          <% } else { %>
+            <p><strong>Salon:</strong> <%= contactAddress %></p>
+            <p class="seller-hours">Auto jest w transporcie do Polski — zapytaj o termin dostawy i rezerwację.</p>
+          <% } %>
+        </div>
+      </aside>
+    </div>
+
+    <% if (car.description) { %>
+      <div class="detail-description">
+        <h2>Opis</h2>
+        <p><%= car.description %></p>
+      </div>
+    <% } %>
+
+    <div class="detail-contact" id="zapytaj">
+      <h2>Zapytaj o to auto</h2>
+      <% if (sent) { %><div class="form-note ok">Dziękujemy! Twoje zapytanie zostało wysłane — odezwiemy się wkrótce.</div><% } %>
+      <form method="POST" action="/kontakt">
+        <input type="hidden" name="car_id" value="<%= car.id %>">
+        <input type="hidden" name="redirect" value="/auta/<%= car.id %>">
+        <div class="form-row">
+          <label>Imię i nazwisko *<input type="text" name="name" required maxlength="120" autocomplete="name"></label>
+          <label>Telefon<input type="tel" name="phone" maxlength="40" autocomplete="tel"></label>
+        </div>
+        <label>E-mail *<input type="email" name="email" required maxlength="160" autocomplete="email"></label>
+        <label>Treść wiadomości *<textarea name="message" rows="4" required maxlength="4000">Dzień dobry, proszę o więcej informacji o: <%= car.title %></textarea></label>
+        <button type="submit" class="btn btn-primary">Wyślij zapytanie</button>
+      </form>
+    </div>
+
+    <% if (similar.length) { %>
+      <h2 class="section-title left" style="margin-top:3rem">Podobne auta</h2>
+      <div class="cars-grid">
+        <% similar.forEach(s => { %>
+          <div class="car-card">
+            <a class="car-card-link" href="/auta/<%= s.id %>">
+              <div class="car-photo">
+                <img src="<%= s.imageList[0] %>" alt="<%= s.title %>" loading="lazy">
+                <% if (s.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } else if (s.category === 'w_drodze') { %><span class="badge-transit">W drodze</span><% } %>
+              </div>
+              <div class="car-info">
+                <h3><%= s.title %></h3>
+                <div class="car-meta"><span><%= s.year || '—' %></span><span><%= fmtKm(s.mileage) %></span></div>
+                <div class="car-price"><%= fmtPrice(s.price, s.currency) %></div>
+              </div>
+            </a>
+            <div class="car-contact">
+              <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a>
+              <a href="/auta/<%= s.id %>#zapytaj" class="car-contact-msg">Wyślij wiadomość</a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

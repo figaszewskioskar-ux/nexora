@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('partials/head') %>
+  <title><%= listing.title %> — Level Auto</title>
+  <meta name="description" content="<%= listing.sub %>">
+</head>
+<body>
+<%- include('partials/nav', { page: listing.page }) %>
+
+<section class="page-hero">
+  <div class="container page-hero-inner">
+    <h1><%= listing.title %></h1>
+    <p><%= listing.sub %></p>
+  </div>
+  <div class="flag-stripe" aria-hidden="true"></div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="filters" method="GET" action="<%= listing.path %>">
+      <input type="text" name="q" placeholder="Szukaj (np. Mustang)" value="<%= filters.q || '' %>">
+      <select name="brand">
+        <option value="">Marka: wszystkie</option>
+        <% brands.forEach(b => { %><option value="<%= b %>" <%= filters.brand === b ? 'selected' : '' %>><%= b %></option><% }) %>
+      </select>
+      <select name="fuel">
+        <option value="">Paliwo: wszystkie</option>
+        <% fuels.forEach(f => { %><option value="<%= f %>" <%= filters.fuel === f ? 'selected' : '' %>><%= f %></option><% }) %>
+      </select>
+      <select name="sort">
+        <option value="">Sortuj: najnowsze</option>
+        <option value="price_asc" <%= filters.sort === 'price_asc' ? 'selected' : '' %>>Cena: rosnąco</option>
+        <option value="price_desc" <%= filters.sort === 'price_desc' ? 'selected' : '' %>>Cena: malejąco</option>
+        <option value="year_desc" <%= filters.sort === 'year_desc' ? 'selected' : '' %>>Rocznik: najnowsze</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Filtruj</button>
+    </form>
+
+    <% if (!cars.length) { %>
+      <p class="empty-note">Brak ogłoszeń spełniających kryteria. <a href="<%= listing.path %>">Wyczyść filtry</a></p>
+    <% } %>
+
+    <div class="cars-grid">
+      <% cars.forEach(car => { %>
+        <div class="car-card">
+          <a class="car-card-link" href="/auta/<%= car.id %>">
+            <div class="car-photo">
+              <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } else if (car.category === 'w_drodze') { %><span class="badge-transit">W drodze</span><% } %>
+              <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
+            </div>
+            <div class="car-info">
+              <h3><%= car.title %></h3>
+              <div class="car-meta">
+                <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span><span><%= car.transmission || '—' %></span>
+              </div>
+              <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+            </div>
+          </a>
+          <div class="car-contact">
+            <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a>
+            <a href="/auta/<%= car.id %>#zapytaj" class="car-contact-msg">Wyślij wiadomość</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <p class="cross-link"><a href="<%= listing.crossPath %>"><%= listing.crossLabel %></a></p>
+
+    <div class="cta-banner">
+      <div>
+        <h3><%= listing.cta.title %></h3>
+        <p><%= listing.cta.text %></p>
+      </div>
+      <a href="<%= listing.cta.href %>" class="btn btn-primary"><%= listing.cta.button %></a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

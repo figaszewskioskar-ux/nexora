@@ -1,0 +1,28 @@
+<footer class="site-footer">
+  <div class="flag-stripe" aria-hidden="true"></div>
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand-row">
+        <img src="/img/logo-full.png" alt="Level Auto" class="footer-wordmark">
+      </div>
+      <p>Import i sprzedaż samochodów z USA i Kanady. Licytujemy na aukcjach Copart i IAAI, organizujemy transport przez ocean i przygotowujemy auta do jazdy w Polsce — kompleksowo i bezpiecznie.</p>
+    </div>
+    <div>
+      <h4>Menu</h4>
+      <a href="/">Strona główna</a>
+      <a href="/gotowe">Auta od ręki</a>
+      <a href="/w-drodze">W drodze do Polski</a>
+      <a href="/#uslugi">Jak działamy</a>
+      <a href="/#kontakt">Kontakt</a>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <p><%= contactPhone %><br><%= contactEmail %><br><%= contactAddress %></p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <%= new Date().getFullYear() %> Level Auto. Wszystkie prawa zastrzeżone.</span>
+    <a href="/admin/login" class="footer-admin">Panel administratora</a>
+  </div>
+</footer>
+<%- include('chat-widget') %>

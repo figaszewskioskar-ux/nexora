@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('partials/head') %>
+  <title>Level Auto — Import aut z USA i Kanady | Sprzedaż samochodów</title>
+  <meta name="description" content="Level Auto — licytujemy, sprowadzamy i sprzedajemy samochody z USA i Kanady. Sprawdź auta na sprzedaż i zamów wymarzone auto z aukcji.">
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <p class="eyebrow">Import i sprzedaż aut z USA i Kanady</p>
+      <h1>Amerykańskie auta <span>od ręki</span> w Warszawie</h1>
+      <p class="hero-sub">Sprowadzamy samochody z aukcji w USA i Kanadzie i sprzedajemy je na miejscu —
+        przy ul. Puławskiej 504 w Warszawie. Kolejne transporty są już w drodze. A jeśli nie znajdziesz
+        auta dla siebie, odezwij się — znajdziemy je dla Ciebie.</p>
+      <div class="hero-actions">
+        <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
+        <a href="/w-drodze" class="btn btn-outline">W drodze do Polski</a>
+        <a href="#kontakt" class="btn btn-outline">Znajdziemy auto dla Ciebie</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>10+</strong><span>lat doświadczenia</span></div>
+        <div><strong>500+</strong><span>sprzedanych aut</span></div>
+        <div><strong>Warszawa</strong><span>Puławska 504 — auta na placu</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img">
+        <defs>
+          <linearGradient id="hvBody" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#1d3359"/><stop offset="1" stop-color="#16294a"/>
+          </linearGradient>
+          <linearGradient id="hvRoad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#e4e2dc"/><stop offset="1" stop-color="#cfccc4"/>
+          </linearGradient>
+        </defs>
+        <!-- emblemat: gwiazdy + okrąg -->
+        <circle cx="400" cy="96" r="78" fill="none" stroke="#c8102e" stroke-width="2" opacity="0.45"/>
+        <circle cx="400" cy="96" r="64" fill="none" stroke="#16294a" stroke-width="1.5" opacity="0.3"/>
+        <g fill="#c8102e" opacity="0.85">
+          <path d="M400 44 l4.7 9.5 10.5 1.5 -7.6 7.4 1.8 10.4 -9.4 -4.9 -9.4 4.9 1.8 -10.4 -7.6 -7.4 10.5 -1.5 z"/>
+        </g>
+        <g fill="#16294a" opacity="0.55">
+          <circle cx="352" cy="120" r="3"/><circle cx="448" cy="120" r="3"/>
+          <circle cx="368" cy="66" r="3"/><circle cx="432" cy="66" r="3"/>
+        </g>
+        <text x="400" y="140" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="15" letter-spacing="3" fill="#16294a">USA &#183; CANADA</text>
+        <!-- pasy prędkości -->
+        <g stroke-linecap="round">
+          <line x1="20" y1="250" x2="150" y2="250" stroke="#c8102e" stroke-width="7" opacity="0.85"/>
+          <line x1="48" y1="272" x2="166" y2="272" stroke="#16294a" stroke-width="7" opacity="0.5"/>
+          <line x1="10" y1="294" x2="120" y2="294" stroke="#c8102e" stroke-width="7" opacity="0.35"/>
+        </g>
+        <!-- cień pod autem -->
+        <ellipse cx="292" cy="368" rx="232" ry="11" fill="#131a26" opacity="0.1"/>
+        <!-- muscle car — sylwetka -->
+        <g>
+          <path fill="url(#hvBody)" d="M96 306
+            c2 -20 12 -32 34 -37
+            l30 -6 c16 -22 38 -37 66 -40
+            l84 -3 c30 1 56 12 76 32 l20 20 44 8
+            c22 5 32 15 34 30 l-2 12 c-1 5 -5 8 -10 8 l-26 0
+            c-4 -22 -22 -37 -45 -37 c-23 0 -41 15 -45 37 l-130 0
+            c-4 -22 -22 -37 -45 -37 c-23 0 -41 15 -45 37 l-28 0
+            c-7 0 -12 -5 -12 -12 z"/>
+          <!-- refleks na masce -->
+          <path fill="#ffffff" opacity="0.07" d="M126 300 c20 -24 48 -38 82 -41 l180 -6 c30 2 54 12 72 30 l-8 4 -280 6 z"/>
+          <!-- szyby -->
+          <path fill="#dfe6f0" d="M170 263 c14 -18 32 -29 56 -31 l56 -2 -6 33 z"/>
+          <path fill="#c7d2e2" d="M292 231 c24 2 44 11 60 26 l6 8 -68 -2 z"/>
+          <!-- pas wyścigowy -->
+          <path fill="#c8102e" d="M236 226 l18 0 -8 114 -18 0 z"/>
+          <!-- koła -->
+          <g>
+            <circle cx="181" cy="330" r="34" fill="#131a26"/>
+            <circle cx="181" cy="330" r="15" fill="#eceae5"/>
+            <circle cx="181" cy="330" r="6" fill="#c8102e"/>
+            <circle cx="401" cy="330" r="34" fill="#131a26"/>
+            <circle cx="401" cy="330" r="15" fill="#eceae5"/>
+            <circle cx="401" cy="330" r="6" fill="#c8102e"/>
+          </g>
+          <!-- światła -->
+          <rect x="464" y="292" width="16" height="7" rx="3" fill="#ffd8dd"/>
+          <rect x="98" y="292" width="12" height="7" rx="3" fill="#f3c8c8"/>
+        </g>
+        <!-- droga -->
+        <rect x="40" y="362" width="440" height="6" rx="3" fill="url(#hvRoad)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="flag-stripe" aria-hidden="true"></div>
+
+<section class="section" id="uslugi">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow centered">Auto na zamówienie</p>
+      <h2 class="section-title">Nie znalazłeś auta w ofercie?</h2>
+      <p class="section-sub">Znajdziemy je dla Ciebie. Tak wygląda sprowadzenie auta na zamówienie — średnio 6–8 tygodni od licytacji do odbioru.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><span class="step-num">01</span>
+        <h3>Wybierasz auto</h3>
+        <p>Mówisz nam, jakiego samochodu szukasz, albo wybierasz konkretny egzemplarz z aukcji Copart / IAAI. Doradzimy i zweryfikujemy historię pojazdu.</p>
+      </div>
+      <div class="step-card"><span class="step-num">02</span>
+        <h3>Licytujemy dla Ciebie</h3>
+        <p>Licytujemy w Twoim imieniu na aukcjach w USA i Kanadzie. Ustalamy limit ceny i pilnujemy budżetu — bez ukrytych kosztów.</p>
+      </div>
+      <div class="step-card"><span class="step-num">03</span>
+        <h3>Transport i formalności</h3>
+        <p>Organizujemy transport lądowy i morski, odprawę celną oraz pełną dokumentację. Auto trafia bezpiecznie do Polski.</p>
+      </div>
+      <div class="step-card"><span class="step-num">04</span>
+        <h3>Odbierasz kluczyki</h3>
+        <p>Pomagamy w naprawie, tłumaczeniach i rejestracji. Odbierasz gotowe do jazdy auto — często 20–30% taniej niż z polskiego rynku.</p>
+      </div>
+    </div>
+
+    <div class="cta-banner">
+      <div>
+        <h3>Nie znalazłeś auta, które Ci się podoba?</h3>
+        <p>Odezwij się — <strong>znajdziemy je dla Ciebie</strong>. Napisz w formularzu, jakiego samochodu szukasz, a przygotujemy propozycje z aukcji i bezpłatną wycenę.</p>
+      </div>
+      <a href="#kontakt" class="btn btn-primary">Napisz do nas</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="oferta">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow centered">Aktualna oferta</p>
+      <h2 class="section-title">Auta na sprzedaż</h2>
+      <p class="section-sub">Auta dostępne od ręki przy Puławskiej 504 w Warszawie oraz egzemplarze, które płyną już do Polski — oznaczone znaczkami „Od ręki" i „W drodze".</p>
+    </div>
+    <div class="cars-grid">
+      <% featured.forEach(car => { %>
+        <div class="car-card">
+          <a class="car-card-link" href="/auta/<%= car.id %>">
+            <div class="car-photo">
+              <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+              <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } else if (car.category === 'w_drodze') { %><span class="badge-transit">W drodze</span><% } %>
+              <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
+            </div>
+            <div class="car-info">
+              <h3><%= car.title %></h3>
+              <div class="car-meta">
+                <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span>
+              </div>
+              <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+            </div>
+          </a>
+          <div class="car-contact">
+            <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a>
+            <a href="/auta/<%= car.id %>#zapytaj" class="car-contact-msg">Wyślij wiadomość</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <div class="center hero-actions" style="justify-content:center">
+      <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
+      <a href="/w-drodze" class="btn btn-outline">W drodze do Polski</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats-band">
+  <div class="flag-stripe" aria-hidden="true"></div>
+  <div class="container stats-band-inner">
+    <div><strong>10<em>+</em></strong><span>lat na rynku importu</span></div>
+    <div><strong>500<em>+</em></strong><span>aut sprowadzonych do Polski</span></div>
+    <div><strong>6–8 <em>tyg.</em></strong><span>średni czas realizacji</span></div>
+    <div><strong>100<em>%</em></strong><span>legalna dokumentacja i tytuły własności</span></div>
+  </div>
+</section>
+
+<section class="section" id="o-nas">
+  <div class="container about-grid">
+    <div>
+      <div class="section-head left">
+        <p class="eyebrow">O nas</p>
+        <h2 class="section-title">Dlaczego Level Auto?</h2>
+      </div>
+      <p>Od ponad dekady sprowadzamy samochody z rynku amerykańskiego i kanadyjskiego. Współpracujemy bezpośrednio
+        z aukcjami Copart i IAAI oraz sprawdzonymi przewoźnikami, dzięki czemu masz pewność uczciwej ceny
+        i bezpiecznej dostawy.</p>
+      <ul class="checklist">
+        <li>Pełna weryfikacja historii pojazdu (Carfax / AutoCheck)</li>
+        <li>Przejrzysta kalkulacja — znasz koszt końcowy przed licytacją</li>
+        <li>Własne zaplecze logistyczne i pomoc w naprawach</li>
+        <li>Faktura, umowa i wsparcie po zakupie</li>
+      </ul>
+    </div>
+    <div class="about-panel">
+      <h3>Kompleksowa obsługa</h3>
+      <div class="mini-list">
+        <div class="mini-card"><strong>Aukcje Copart / IAAI</strong><span>dostęp do tysięcy aut tygodniowo</span></div>
+        <div class="mini-card"><strong>Transport morski</strong><span>kontenery z portów USA i Kanady</span></div>
+        <div class="mini-card"><strong>Odprawa i akcyza</strong><span>wszystkie formalności po naszej stronie</span></div>
+        <div class="mini-card"><strong>Gwarancja legalności</strong><span>oryginalne dokumenty i tytuły własności</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="opinie">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow centered">Opinie klientów</p>
+      <h2 class="section-title">Zaufali nam</h2>
+      <p class="section-sub">Setki zadowolonych klientów i polecenia, które napędzają nas od lat.</p>
+    </div>
+    <div class="reviews-grid">
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 gwiazdek">★★★★★</div>
+        <blockquote>Mustang z Kalifornii przyjechał dokładnie w terminie, a koszt końcowy zgadzał się z kalkulacją co do złotówki. Pełen profesjonalizm na każdym etapie.</blockquote>
+        <figcaption><strong>Marcin K.</strong>Ford Mustang GT, 2021</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 gwiazdek">★★★★★</div>
+        <blockquote>Bałam się importu zza oceanu, ale wszystko wzięli na siebie — od licytacji po rejestrację. Dostawałam zdjęcia i raporty z każdego etapu transportu.</blockquote>
+        <figcaption><strong>Anna W.</strong>Jeep Grand Cherokee, 2022</figcaption>
+      </figure>
+      <figure class="review-card">
+        <div class="review-stars" aria-label="5 gwiazdek">★★★★★</div>
+        <blockquote>Trzecie auto, które sprowadzam z Level Auto. Zawsze uczciwie doradzą, odradzą słabe egzemplarze i znajdą coś w budżecie. Polecam każdemu.</blockquote>
+        <figcaption><strong>Tomasz B.</strong>RAM 1500, 2021</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="kontakt">
+  <div class="container contact-grid">
+    <div>
+      <div class="section-head left">
+        <p class="eyebrow">Kontakt</p>
+        <h2 class="section-title">Skontaktuj się z nami</h2>
+      </div>
+      <p>Masz pytanie o auto z oferty albo chcesz sprowadzić samochód na zamówienie? Napisz lub zadzwoń — odpowiadamy szybko.</p>
+      <div class="contact-details">
+        <p><strong>Telefon</strong> <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a></p>
+        <p><strong>E-mail</strong> <a href="mailto:<%= contactEmail %>"><%= contactEmail %></a></p>
+        <p><strong>Auta od ręki obejrzysz</strong> <%= contactAddress %></p>
+        <p><strong>Godziny otwarcia</strong> pon–pt 9:00–18:00, sob 10:00–14:00</p>
+      </div>
+    </div>
+    <form class="contact-form" method="POST" action="/kontakt">
+      <h3>Napisz do nas</h3>
+      <input type="hidden" name="redirect" value="/">
+      <div class="form-note" id="formNote"></div>
+      <label>Imię i nazwisko *<input type="text" name="name" required maxlength="120" autocomplete="name"></label>
+      <div class="form-row">
+        <label>E-mail *<input type="email" name="email" required maxlength="160" autocomplete="email"></label>
+        <label>Telefon<input type="tel" name="phone" maxlength="40" autocomplete="tel"></label>
+      </div>
+      <label>Treść wiadomości *<textarea name="message" rows="5" required maxlength="4000" placeholder="Np. interesuje mnie Ford Mustang z Waszej oferty..."></textarea></label>
+      <button type="submit" class="btn btn-primary">Wyślij wiadomość</button>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<script>
+  const params = new URLSearchParams(location.search);
+  const note = document.getElementById('formNote');
+  if (params.get('sent') === '1') { note.textContent = 'Dziękujemy! Twoja wiadomość została wysłana — odezwiemy się wkrótce.'; note.className = 'form-note ok'; }
+  if (params.get('error') === '1') { note.textContent = 'Uzupełnij wymagane pola: imię i nazwisko, e-mail oraz treść wiadomości.'; note.className = 'form-note err'; }
+</script>
+</body>
+</html>
