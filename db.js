@@ -78,6 +78,12 @@ if (!sessionCols.includes('visitor_email')) {
   db.exec('ALTER TABLE chat_sessions ADD COLUMN visitor_email TEXT');
 }
 
+// --- Migracja: kategoria ogłoszenia (import na zamówienie / gotowe od ręki) ---
+const carCols = db.prepare(`PRAGMA table_info(cars)`).all().map(c => c.name);
+if (!carCols.includes('category')) {
+  db.exec(`ALTER TABLE cars ADD COLUMN category TEXT DEFAULT 'import'`);
+}
+
 // --- Seed admin user ---
 const adminExists = db.prepare('SELECT COUNT(*) AS c FROM users').get().c > 0;
 if (!adminExists) {
@@ -118,44 +124,44 @@ if (carsCount === 0) {
     {
       title: 'Ford Mustang GT 5.0 V8', brand: 'Ford', model: 'Mustang GT', year: 2021, price: 189900,
       mileage: 42000, fuel: 'Benzyna', transmission: 'Automatyczna', power: 450, engine_capacity: 5000,
-      body_type: 'Coupe', color: 'Czerwony', featured: 1, accent: '#e11d2e',
+      body_type: 'Coupe', color: 'Czerwony', featured: 1, category: 'gotowe', accent: '#e11d2e',
       description: 'Ford Mustang GT sprowadzony z USA. Silnik 5.0 V8, pełna dokumentacja aukcyjna, auto po opłatach, zarejestrowane w Polsce. Bogate wyposażenie: skórzana tapicerka, kamera cofania, tryby jazdy.'
     },
     {
       title: 'Dodge Challenger R/T 5.7 HEMI', brand: 'Dodge', model: 'Challenger R/T', year: 2020, price: 159900,
       mileage: 58000, fuel: 'Benzyna', transmission: 'Automatyczna', power: 381, engine_capacity: 5700,
-      body_type: 'Coupe', color: 'Czarny', featured: 1, accent: '#d97706',
+      body_type: 'Coupe', color: 'Czarny', featured: 1, category: 'gotowe', accent: '#d97706',
       description: 'Legendarny amerykański muscle car. Dodge Challenger R/T z silnikiem 5.7 HEMI V8. Import z USA z pełną historią, bezwypadkowy przód, auto gotowe do rejestracji.'
     },
     {
       title: 'Jeep Grand Cherokee Limited 3.6', brand: 'Jeep', model: 'Grand Cherokee', year: 2022, price: 174500,
       mileage: 31000, fuel: 'Benzyna+LPG', transmission: 'Automatyczna', power: 286, engine_capacity: 3600,
-      body_type: 'SUV', color: 'Granatowy', featured: 1, accent: '#2563eb',
+      body_type: 'SUV', color: 'Granatowy', featured: 1, category: 'gotowe', accent: '#2563eb',
       description: 'Jeep Grand Cherokee Limited z instalacją LPG. Napęd 4x4, skóra, panorama, hak. Sprowadzony z Kanady, serwisowany, faktura VAT marża.'
     },
     {
       title: 'Tesla Model 3 Long Range AWD', brand: 'Tesla', model: 'Model 3', year: 2022, price: 139900,
       mileage: 27000, fuel: 'Elektryczny', transmission: 'Automatyczna', power: 440, engine_capacity: 0,
-      body_type: 'Sedan', color: 'Biały', featured: 0, accent: '#e5e7eb',
+      body_type: 'Sedan', color: 'Biały', featured: 0, category: 'import', accent: '#e5e7eb',
       description: 'Tesla Model 3 Long Range z napędem AWD. Zasięg do 560 km, autopilot, aktualizacje OTA. Auto z rynku amerykańskiego, sprawdzone, po przeglądzie.'
     },
     {
       title: 'Chevrolet Camaro SS 6.2 V8', brand: 'Chevrolet', model: 'Camaro SS', year: 2019, price: 144900,
       mileage: 64000, fuel: 'Benzyna', transmission: 'Manualna', power: 453, engine_capacity: 6200,
-      body_type: 'Coupe', color: 'Żółty', featured: 0, accent: '#eab308',
+      body_type: 'Coupe', color: 'Żółty', featured: 0, category: 'import', accent: '#eab308',
       description: 'Chevrolet Camaro SS z manualną skrzynią biegów. Silnik 6.2 V8, sportowy wydech, świetny stan techniczny i wizualny. Import USA, opłacony.'
     },
     {
       title: 'RAM 1500 Laramie 5.7 HEMI 4x4', brand: 'RAM', model: '1500 Laramie', year: 2021, price: 219900,
       mileage: 47000, fuel: 'Benzyna+LPG', transmission: 'Automatyczna', power: 401, engine_capacity: 5700,
-      body_type: 'Pickup', color: 'Srebrny', featured: 0, accent: '#94a3b8',
+      body_type: 'Pickup', color: 'Srebrny', featured: 0, category: 'import', accent: '#94a3b8',
       description: 'RAM 1500 Laramie — król amerykańskich pickupów. HEMI 5.7 z LPG, napęd 4x4, skóra, podgrzewane fotele. Idealny do pracy i na co dzień. VAT-1 możliwy.'
     }
   ];
 
   const insert = db.prepare(`INSERT INTO cars
-    (title, brand, model, year, price, mileage, fuel, transmission, power, engine_capacity, body_type, color, description, images, featured)
-    VALUES (@title, @brand, @model, @year, @price, @mileage, @fuel, @transmission, @power, @engine_capacity, @body_type, @color, @description, @images, @featured)`);
+    (title, brand, model, year, price, mileage, fuel, transmission, power, engine_capacity, body_type, color, description, images, featured, category)
+    VALUES (@title, @brand, @model, @year, @price, @mileage, @fuel, @transmission, @power, @engine_capacity, @body_type, @color, @description, @images, @featured, @category)`);
 
   for (const c of seed) {
     const img = placeholder(`${c.brand} ${c.model}`, c.accent);

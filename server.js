@@ -78,10 +78,10 @@ app.get('/', (req, res) => {
   res.render('index', { featured, page: 'home' });
 });
 
-app.get('/auta', (req, res) => {
+function renderCarList(req, res, category, listing) {
   const { brand, fuel, sort, q } = req.query;
-  let sql = `SELECT * FROM cars WHERE status != 'sprzedany'`;
-  const params = [];
+  let sql = `SELECT * FROM cars WHERE status != 'sprzedany' AND category = ?`;
+  const params = [category];
   if (brand) { sql += ' AND brand = ?'; params.push(brand); }
   if (fuel) { sql += ' AND fuel = ?'; params.push(fuel); }
   if (q) { sql += ' AND (title LIKE ? OR description LIKE ?)'; params.push(`%${q}%`, `%${q}%`); }
@@ -91,10 +91,30 @@ app.get('/auta', (req, res) => {
   else sql += ' ORDER BY created_at DESC';
 
   const cars = db.prepare(sql).all(...params).map(parseImages);
-  const brands = db.prepare(`SELECT DISTINCT brand FROM cars WHERE brand IS NOT NULL AND status != 'sprzedany' ORDER BY brand`).all().map(r => r.brand);
-  const fuels = db.prepare(`SELECT DISTINCT fuel FROM cars WHERE fuel IS NOT NULL AND status != 'sprzedany' ORDER BY fuel`).all().map(r => r.fuel);
-  res.render('cars', { cars, brands, fuels, filters: { brand, fuel, sort, q }, page: 'cars' });
-});
+  const brands = db.prepare(`SELECT DISTINCT brand FROM cars WHERE brand IS NOT NULL AND status != 'sprzedany' AND category = ? ORDER BY brand`).all(category).map(r => r.brand);
+  const fuels = db.prepare(`SELECT DISTINCT fuel FROM cars WHERE fuel IS NOT NULL AND status != 'sprzedany' AND category = ? ORDER BY fuel`).all(category).map(r => r.fuel);
+  res.render('cars', { cars, brands, fuels, filters: { brand, fuel, sort, q }, listing });
+}
+
+// Auta na sprzedaż — oferta importowa (licytujemy i sprowadzamy)
+app.get('/auta', (req, res) => renderCarList(req, res, 'import', {
+  page: 'cars',
+  path: '/auta',
+  title: 'Auta na sprzedaż',
+  sub: 'Oferta importowa — wybrane egzemplarze z aukcji w USA i Kanadzie. Licytujemy i sprowadzamy dla Ciebie.',
+  crossPath: '/gotowe',
+  crossLabel: 'Nie chcesz czekać? Zobacz auta od ręki →'
+}));
+
+// Auta od ręki — już sprowadzone, na placu, gotowe do odbioru
+app.get('/gotowe', (req, res) => renderCarList(req, res, 'gotowe', {
+  page: 'ready',
+  path: '/gotowe',
+  title: 'Auta od ręki',
+  sub: 'Samochody już sprowadzone, opłacone i przygotowane do rejestracji. Odbiór od ręki z naszego placu.',
+  crossPath: '/auta',
+  crossLabel: 'Szukasz czegoś innego? Zobacz ofertę importową →'
+}));
 
 app.get('/auta/:id', (req, res) => {
   const car = db.prepare('SELECT * FROM cars WHERE id = ?').get(req.params.id);
@@ -102,7 +122,7 @@ app.get('/auta/:id', (req, res) => {
   parseImages(car);
   const similar = db.prepare(`SELECT * FROM cars WHERE id != ? AND status != 'sprzedany' ORDER BY (brand = ?) DESC, created_at DESC LIMIT 3`)
     .all(car.id, car.brand).map(parseImages);
-  res.render('car-detail', { car, similar, page: 'cars', sent: req.query.sent === '1' });
+  res.render('car-detail', { car, similar, page: car.category === 'gotowe' ? 'ready' : 'cars', sent: req.query.sent === '1' });
 });
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -146,6 +166,7 @@ app.get('/admin', requireAdmin, (req, res) => {
   const cars = db.prepare('SELECT * FROM cars ORDER BY created_at DESC').all().map(parseImages);
   const stats = {
     cars: cars.length,
+    ready: cars.filter(c => c.category === 'gotowe' && c.status !== 'sprzedany').length,
     available: cars.filter(c => c.status === 'dostepny').length,
     messages: db.prepare('SELECT COUNT(*) AS c FROM contact_messages WHERE is_read = 0').get().c,
     chats: db.prepare(`SELECT COUNT(DISTINCT session_id) AS c FROM chat_messages WHERE sender = 'visitor' AND is_read = 0`).get().c
@@ -154,14 +175,15 @@ app.get('/admin', requireAdmin, (req, res) => {
 });
 
 app.get('/admin/auta/nowe', requireAdmin, (req, res) => {
-  res.render('admin/car-form', { car: null, adminName: req.session.adminName, error: null });
+  const presetCategory = req.query.kategoria === 'gotowe' ? 'gotowe' : 'import';
+  res.render('admin/car-form', { car: null, presetCategory, adminName: req.session.adminName, error: null });
 });
 
 app.get('/admin/auta/:id/edytuj', requireAdmin, (req, res) => {
   const car = db.prepare('SELECT * FROM cars WHERE id = ?').get(req.params.id);
   if (!car) return res.redirect('/admin');
   parseImages(car);
-  res.render('admin/car-form', { car, adminName: req.session.adminName, error: null });
+  res.render('admin/car-form', { car, presetCategory: car.category, adminName: req.session.adminName, error: null });
 });
 
 function carFromBody(body) {
@@ -186,6 +208,7 @@ function carFromBody(body) {
     vin: (body.vin || '').trim() || null,
     description: (body.description || '').trim(),
     status: ['dostepny', 'zarezerwowany', 'sprzedany'].includes(body.status) ? body.status : 'dostepny',
+    category: body.category === 'gotowe' ? 'gotowe' : 'import',
     featured: body.featured ? 1 : 0,
     source_url: (body.source_url || '').trim() || null
   };
@@ -197,8 +220,8 @@ app.post('/admin/auta/nowe', requireAdmin, upload.array('photos', 15), (req, res
   const uploaded = (req.files || []).map(f => `/uploads/${f.filename}`);
   const urlImages = (req.body.image_urls || '').split(/\n+/).map(s => s.trim()).filter(s => /^https?:\/\//.test(s));
   car.images = JSON.stringify([...uploaded, ...urlImages]);
-  db.prepare(`INSERT INTO cars (title, brand, model, year, price, currency, mileage, fuel, transmission, power, engine_capacity, body_type, color, vin, description, status, featured, source_url, images)
-    VALUES (@title, @brand, @model, @year, @price, @currency, @mileage, @fuel, @transmission, @power, @engine_capacity, @body_type, @color, @vin, @description, @status, @featured, @source_url, @images)`).run(car);
+  db.prepare(`INSERT INTO cars (title, brand, model, year, price, currency, mileage, fuel, transmission, power, engine_capacity, body_type, color, vin, description, status, category, featured, source_url, images)
+    VALUES (@title, @brand, @model, @year, @price, @currency, @mileage, @fuel, @transmission, @power, @engine_capacity, @body_type, @color, @vin, @description, @status, @category, @featured, @source_url, @images)`).run(car);
   res.redirect('/admin');
 });
 
@@ -219,8 +242,8 @@ app.post('/admin/auta/:id/edytuj', requireAdmin, upload.array('photos', 15), (re
 
   db.prepare(`UPDATE cars SET title=@title, brand=@brand, model=@model, year=@year, price=@price, currency=@currency,
     mileage=@mileage, fuel=@fuel, transmission=@transmission, power=@power, engine_capacity=@engine_capacity,
-    body_type=@body_type, color=@color, vin=@vin, description=@description, status=@status, featured=@featured,
-    source_url=@source_url, images=@images, updated_at=datetime('now') WHERE id=@id`).run(car);
+    body_type=@body_type, color=@color, vin=@vin, description=@description, status=@status, category=@category,
+    featured=@featured, source_url=@source_url, images=@images, updated_at=datetime('now') WHERE id=@id`).run(car);
   res.redirect('/admin');
 });
 
@@ -236,19 +259,22 @@ app.get('/admin/import', requireAdmin, (req, res) => {
 
 app.post('/admin/import', requireAdmin, async (req, res) => {
   const url = (req.body.url || '').trim();
+  const category = req.body.category === 'import' ? 'import' : 'gotowe';
   const render = (data) => res.render('admin/import', { adminName: req.session.adminName, result: null, error: null, ...data });
   if (!/^https?:\/\/([a-z0-9-]+\.)*otomoto\.pl\//i.test(url)) {
     return render({ error: 'Podaj poprawny adres z domeny otomoto.pl' });
   }
+  const insertImported = (car, sourceUrl) => db.prepare(`INSERT INTO cars
+      (title, brand, model, year, price, currency, mileage, fuel, transmission, power, engine_capacity, body_type, color, vin, description, category, source_url, images)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .run(car.title, car.brand || null, car.model || null, car.year || null, car.price || null, car.currency,
+      car.mileage || null, car.fuel || null, car.transmission || null, car.power || null, car.engine_capacity || null,
+      car.body_type || null, car.color || null, car.vin || null, car.description || '', category, sourceUrl, JSON.stringify(car.images || []));
   try {
     const isListing = /\/oferta\//.test(url);
     if (isListing) {
       const car = await scrapeOtomotoListing(url);
-      const inserted = db.prepare(`INSERT INTO cars (title, brand, model, year, price, currency, mileage, fuel, transmission, power, engine_capacity, body_type, color, vin, description, source_url, images)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-        .run(car.title, car.brand || null, car.model || null, car.year || null, car.price || null, car.currency,
-          car.mileage || null, car.fuel || null, car.transmission || null, car.power || null, car.engine_capacity || null,
-          car.body_type || null, car.color || null, car.vin || null, car.description || '', url, JSON.stringify(car.images || []));
+      const inserted = insertImported(car, url);
       return render({ result: { type: 'listing', car, id: inserted.lastInsertRowid } });
     }
     const links = await scrapeOtomotoInventory(url);
@@ -258,11 +284,7 @@ app.post('/admin/import', requireAdmin, async (req, res) => {
       if (db.prepare('SELECT id FROM cars WHERE source_url = ?').get(link)) continue;
       try {
         const car = await scrapeOtomotoListing(link);
-        db.prepare(`INSERT INTO cars (title, brand, model, year, price, currency, mileage, fuel, transmission, power, engine_capacity, body_type, color, vin, description, source_url, images)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-          .run(car.title, car.brand || null, car.model || null, car.year || null, car.price || null, car.currency,
-            car.mileage || null, car.fuel || null, car.transmission || null, car.power || null, car.engine_capacity || null,
-            car.body_type || null, car.color || null, car.vin || null, car.description || '', link, JSON.stringify(car.images || []));
+        insertImported(car, link);
         results.imported.push(car.title);
       } catch (e) {
         results.failed.push(link);

@@ -206,6 +206,23 @@ h1, h2, h3, .display {
 .step-card h3 { font-size: 1.35rem; color: var(--navy); margin-bottom: 0.5rem; }
 .step-card p { color: var(--steel); font-size: 0.96rem; }
 
+/* ---------- Baner "auta od ręki" ---------- */
+.cta-banner {
+  margin-top: 2.6rem; background: var(--navy); color: #fff; border-radius: var(--radius);
+  padding: 2rem 2.2rem; display: flex; align-items: center; justify-content: space-between;
+  gap: 1.6rem; flex-wrap: wrap; position: relative; overflow: hidden; box-shadow: var(--shadow-lg);
+}
+.cta-banner::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px;
+  background: repeating-linear-gradient(180deg, var(--red) 0 22px, #fff 22px 44px);
+}
+.cta-banner h3 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+.cta-banner p { color: #aebad0; max-width: 40rem; }
+.cta-banner p strong { color: #fff; }
+.cross-link { margin-top: 0.5rem; }
+.cross-link a { color: var(--red); font-weight: 700; }
+.cross-link a:hover { text-decoration: underline; }
+
 /* ---------- Karty aut ---------- */
 .cars-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.6rem; margin-bottom: 2.4rem; }
 .car-card {
@@ -224,6 +241,12 @@ h1, h2, h3, .display {
   clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%);
 }
 .ribbon.sold { background: var(--steel); }
+.badge-ready {
+  position: absolute; top: 12px; right: 12px; background: var(--ok); color: #fff;
+  font-family: var(--display); text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.26rem 0.75rem; font-size: 0.88rem; font-weight: 600; border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(26, 127, 55, 0.35);
+}
 .car-info { padding: 1.15rem 1.3rem 1.35rem; display: flex; flex-direction: column; flex: 1; }
 .car-info h3 { font-size: 1.3rem; color: var(--navy); margin-bottom: 0.45rem; }
 .car-meta {
@@ -507,6 +530,8 @@ input:focus, select:focus, textarea:focus {
 .status-dostepny { background: #ecf7ef; color: var(--ok); }
 .status-zarezerwowany { background: #fdf3e7; color: var(--warn); }
 .status-sprzedany { background: #eef0f3; color: var(--steel); }
+.cat-ready { background: #ecf7ef; color: var(--ok); border: 1px solid #bfe3c9; }
+.cat-import { background: #eef2f8; color: var(--navy); border: 1px solid #ccd7e8; }
 
 .admin-form { display: flex; flex-direction: column; gap: 1.15rem; max-width: 880px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 2rem; }
 .checkbox-label { flex-direction: row !important; align-items: center; gap: 0.6rem !important; }
@@ -578,5 +603,5 @@ input:focus, select:focus, textarea:focus {
   .hero-stats { flex-direction: column; }
   .hero-stats div { border-right: none; border-bottom: 1px solid var(--line); }
   .hero-stats div:last-child { border-bottom: none; }
-  .admin-table th:nth-child(5), .admin-table td:nth-child(5) { display: none; }
+  .admin-table th:nth-child(6), .admin-table td:nth-child(6) { display: none; }
 }

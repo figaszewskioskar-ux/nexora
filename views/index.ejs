@@ -16,7 +16,8 @@
       <p class="hero-sub">Licytujemy na renomowanych aukcjach Copart i IAAI, organizujemy transport przez ocean
         i załatwiamy wszystkie formalności. Ty wybierasz auto — my zajmujemy się resztą.</p>
       <div class="hero-actions">
-        <a href="/auta" class="btn btn-primary">Zobacz auta na sprzedaż</a>
+        <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
+        <a href="/auta" class="btn btn-outline">Auta na sprzedaż</a>
         <a href="#kontakt" class="btn btn-outline">Zamów auto z USA</a>
       </div>
       <div class="hero-stats">
@@ -114,21 +115,30 @@
         <p>Pomagamy w naprawie, tłumaczeniach i rejestracji. Odbierasz gotowe do jazdy auto — często 20–30% taniej niż z polskiego rynku.</p>
       </div>
     </div>
+
+    <div class="cta-banner">
+      <div>
+        <h3>Nie chcesz czekać 6–8 tygodni?</h3>
+        <p>Mamy też auta <strong>już sprowadzone</strong> — opłacone, przygotowane do rejestracji i gotowe do odbioru od ręki z naszego placu.</p>
+      </div>
+      <a href="/gotowe" class="btn btn-primary">Zobacz auta od ręki</a>
+    </div>
   </div>
 </section>
 
 <section class="section section-alt" id="oferta">
   <div class="container">
     <div class="section-head">
-      <p class="eyebrow centered">Dostępne od ręki</p>
+      <p class="eyebrow centered">Aktualna oferta</p>
       <h2 class="section-title">Auta na sprzedaż</h2>
-      <p class="section-sub">Samochody sprowadzone, opłacone i gotowe do odbioru.</p>
+      <p class="section-sub">Egzemplarze z oferty importowej oraz auta już sprowadzone, gotowe do odbioru od ręki — oznaczone znaczkiem „Od ręki".</p>
     </div>
     <div class="cars-grid">
       <% featured.forEach(car => { %>
         <a class="car-card" href="/auta/<%= car.id %>">
           <div class="car-photo">
             <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+            <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
             <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
           </div>
           <div class="car-info">
@@ -141,7 +151,10 @@
         </a>
       <% }) %>
     </div>
-    <div class="center"><a href="/auta" class="btn btn-primary">Zobacz wszystkie ogłoszenia</a></div>
+    <div class="center hero-actions" style="justify-content:center">
+      <a href="/gotowe" class="btn btn-primary">Auta od ręki</a>
+      <a href="/auta" class="btn btn-outline">Cała oferta importowa</a>
+    </div>
   </div>
 </section>
 

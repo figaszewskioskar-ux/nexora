@@ -2,23 +2,23 @@
 <html lang="pl">
 <head>
   <%- include('partials/head') %>
-  <title>Auta na sprzedaż — Level Auto</title>
-  <meta name="description" content="Samochody na sprzedaż w Level Auto — auta sprowadzone z USA i Kanady, opłacone i gotowe do rejestracji.">
+  <title><%= listing.title %> — Level Auto</title>
+  <meta name="description" content="<%= listing.sub %>">
 </head>
 <body>
-<%- include('partials/nav') %>
+<%- include('partials/nav', { page: listing.page }) %>
 
 <section class="page-hero">
   <div class="container page-hero-inner">
-    <h1>Auta na sprzedaż</h1>
-    <p>Wszystkie auta sprawdzone, opłacone i z pełną dokumentacją importową.</p>
+    <h1><%= listing.title %></h1>
+    <p><%= listing.sub %></p>
   </div>
   <div class="flag-stripe" aria-hidden="true"></div>
 </section>
 
 <section class="section">
   <div class="container">
-    <form class="filters" method="GET" action="/auta">
+    <form class="filters" method="GET" action="<%= listing.path %>">
       <input type="text" name="q" placeholder="Szukaj (np. Mustang)" value="<%= filters.q || '' %>">
       <select name="brand">
         <option value="">Marka: wszystkie</option>
@@ -38,7 +38,7 @@
     </form>
 
     <% if (!cars.length) { %>
-      <p class="empty-note">Brak ogłoszeń spełniających kryteria. <a href="/auta">Wyczyść filtry</a></p>
+      <p class="empty-note">Brak ogłoszeń spełniających kryteria. <a href="<%= listing.path %>">Wyczyść filtry</a></p>
     <% } %>
 
     <div class="cars-grid">
@@ -46,6 +46,7 @@
         <a class="car-card" href="/auta/<%= car.id %>">
           <div class="car-photo">
             <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+            <% if (car.category === 'gotowe') { %><span class="badge-ready">Od ręki</span><% } %>
             <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
           </div>
           <div class="car-info">
@@ -58,6 +59,8 @@
         </a>
       <% }) %>
     </div>
+
+    <p class="cross-link"><a href="<%= listing.crossPath %>"><%= listing.crossLabel %></a></p>
   </div>
 </section>
 

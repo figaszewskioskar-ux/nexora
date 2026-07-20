@@ -4,6 +4,7 @@
     <nav class="main-nav">
       <a href="/admin" class="<%= tab === 'cars' ? 'active' : '' %>">Ogłoszenia</a>
       <a href="/admin/auta/nowe" class="<%= tab === 'new' ? 'active' : '' %>">Dodaj auto</a>
+      <a href="/admin/auta/nowe?kategoria=gotowe" class="<%= tab === 'new-ready' ? 'active' : '' %>">Dodaj gotowe auto</a>
       <a href="/admin/import" class="<%= tab === 'import' ? 'active' : '' %>">Import z Otomoto</a>
       <a href="/admin/wiadomosci" class="<%= tab === 'messages' ? 'active' : '' %>">Wiadomości</a>
       <a href="/admin/chat" class="<%= tab === 'chat' ? 'active' : '' %>">Live chat</a>

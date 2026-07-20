@@ -10,6 +10,7 @@
 <main class="container admin-main">
   <div class="stats-row">
     <div class="stat-card"><strong><%= stats.cars %></strong><span>ogłoszeń łącznie</span></div>
+    <div class="stat-card"><strong><%= stats.ready %></strong><span>aut od ręki</span></div>
     <div class="stat-card"><strong><%= stats.available %></strong><span>dostępnych</span></div>
     <div class="stat-card <%= stats.messages ? 'alert' : '' %>"><strong><%= stats.messages %></strong><span>nowych wiadomości</span></div>
     <div class="stat-card <%= stats.chats ? 'alert' : '' %>"><strong><%= stats.chats %></strong><span>czatów bez odpowiedzi</span></div>
@@ -19,13 +20,14 @@
     <h1>Ogłoszenia</h1>
     <div>
       <a href="/admin/import" class="btn btn-outline">Import z Otomoto</a>
+      <a href="/admin/auta/nowe?kategoria=gotowe" class="btn btn-outline">+ Dodaj gotowe auto</a>
       <a href="/admin/auta/nowe" class="btn btn-primary">+ Dodaj auto</a>
     </div>
   </div>
 
   <table class="admin-table">
     <thead>
-      <tr><th></th><th>Ogłoszenie</th><th>Cena</th><th>Status</th><th>Dodano</th><th>Akcje</th></tr>
+      <tr><th></th><th>Ogłoszenie</th><th>Cena</th><th>Kategoria</th><th>Status</th><th>Dodano</th><th>Akcje</th></tr>
     </thead>
     <tbody>
       <% cars.forEach(car => { %>
@@ -36,6 +38,7 @@
             <small><%= car.year || '—' %> · <%= fmtKm(car.mileage) %> · <%= car.fuel || '—' %><%= car.featured ? ' · ⭐ wyróżnione' : '' %></small>
           </td>
           <td><%= fmtPrice(car.price, car.currency) %></td>
+          <td><span class="status <%= car.category === 'gotowe' ? 'cat-ready' : 'cat-import' %>"><%= car.category === 'gotowe' ? 'Od ręki' : 'Import' %></span></td>
           <td><span class="status status-<%= car.status %>"><%= car.status %></span></td>
           <td><small><%= car.created_at %></small></td>
           <td class="actions">
