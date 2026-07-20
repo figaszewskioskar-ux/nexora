@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('../partials/head') %>
+  <title>Ogłoszenia — Panel Level Auto</title>
+</head>
+<body class="admin-body">
+<%- include('partials/admin-nav', { tab: 'cars' }) %>
+
+<main class="container admin-main">
+  <div class="stats-row">
+    <div class="stat-card"><strong><%= stats.cars %></strong><span>ogłoszeń łącznie</span></div>
+    <div class="stat-card"><strong><%= stats.available %></strong><span>dostępnych</span></div>
+    <div class="stat-card <%= stats.messages ? 'alert' : '' %>"><strong><%= stats.messages %></strong><span>nowych wiadomości</span></div>
+    <div class="stat-card <%= stats.chats ? 'alert' : '' %>"><strong><%= stats.chats %></strong><span>czatów bez odpowiedzi</span></div>
+  </div>
+
+  <div class="admin-toolbar">
+    <h1>Ogłoszenia</h1>
+    <div>
+      <a href="/admin/import" class="btn btn-outline">Import z Otomoto</a>
+      <a href="/admin/auta/nowe" class="btn btn-primary">+ Dodaj auto</a>
+    </div>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr><th></th><th>Ogłoszenie</th><th>Cena</th><th>Status</th><th>Dodano</th><th>Akcje</th></tr>
+    </thead>
+    <tbody>
+      <% cars.forEach(car => { %>
+        <tr>
+          <td><img class="thumb" src="<%= car.imageList[0] %>" alt=""></td>
+          <td>
+            <strong><%= car.title %></strong><br>
+            <small><%= car.year || '—' %> · <%= fmtKm(car.mileage) %> · <%= car.fuel || '—' %><%= car.featured ? ' · ⭐ wyróżnione' : '' %></small>
+          </td>
+          <td><%= fmtPrice(car.price, car.currency) %></td>
+          <td><span class="status status-<%= car.status %>"><%= car.status %></span></td>
+          <td><small><%= car.created_at %></small></td>
+          <td class="actions">
+            <a href="/auta/<%= car.id %>" target="_blank" class="btn btn-sm btn-outline">Podgląd</a>
+            <a href="/admin/auta/<%= car.id %>/edytuj" class="btn btn-sm btn-outline">Edytuj</a>
+            <form method="POST" action="/admin/auta/<%= car.id %>/usun" onsubmit="return confirm('Usunąć ogłoszenie: <%= car.title.replace(/'/g, '') %>?')">
+              <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% if (!cars.length) { %><p class="empty-note">Brak ogłoszeń — dodaj pierwsze auto.</p><% } %>
+</main>
+</body>
+</html>

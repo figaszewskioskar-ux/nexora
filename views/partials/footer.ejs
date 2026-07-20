@@ -1,0 +1,24 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="brand-name footer-brand">LEVEL <em>AUTO</em></div>
+      <p>Import i sprzedaż samochodów z USA i Kanady. Licytujemy, sprowadzamy i przygotowujemy auta do jazdy w Polsce — kompleksowo i bezpiecznie.</p>
+    </div>
+    <div>
+      <h4>Menu</h4>
+      <a href="/">Strona główna</a>
+      <a href="/auta">Auta na sprzedaż</a>
+      <a href="/#uslugi">Jak działamy</a>
+      <a href="/#kontakt">Kontakt</a>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <p><%= contactPhone %><br><%= contactEmail %><br><%= contactAddress %></p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <%= new Date().getFullYear() %> Level Auto. Wszystkie prawa zastrzeżone.</span>
+    <a href="/admin/login" class="footer-admin">Panel administratora</a>
+  </div>
+</footer>
+<%- include('chat-widget') %>

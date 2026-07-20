@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('../partials/head') %>
+  <title>Import z Otomoto — Panel Level Auto</title>
+</head>
+<body class="admin-body">
+<%- include('partials/admin-nav', { tab: 'import' }) %>
+
+<main class="container admin-main">
+  <h1>Import ogłoszeń z Otomoto</h1>
+  <p class="section-sub left">Wklej link do <strong>pojedynczego ogłoszenia</strong> (adres z <code>/oferta/</code>)
+    albo do <strong>profilu dealera / listy ogłoszeń</strong> — pobierzemy tytuły, ceny, opisy, zdjęcia i dane techniczne.</p>
+
+  <% if (error) { %><div class="form-note err"><%= error %></div><% } %>
+
+  <% if (result && result.type === 'listing') { %>
+    <div class="form-note ok">
+      ✅ Zaimportowano ogłoszenie: <strong><%= result.car.title %></strong>
+      — <a href="/admin/auta/<%= result.id %>/edytuj">edytuj</a> · <a href="/auta/<%= result.id %>" target="_blank">podgląd</a>
+    </div>
+  <% } %>
+
+  <% if (result && result.type === 'inventory') { %>
+    <div class="form-note ok">
+      ✅ Znaleziono <%= result.total %> ogłoszeń, zaimportowano <%= result.imported.length %> nowych.
+      <% if (result.imported.length) { %><ul><% result.imported.forEach(t => { %><li><%= t %></li><% }) %></ul><% } %>
+      <% if (result.failed.length) { %><p>⚠️ Nie udało się pobrać <%= result.failed.length %> ogłoszeń — możesz dodać je ręcznie.</p><% } %>
+    </div>
+  <% } %>
+
+  <form class="admin-form" method="POST" action="/admin/import">
+    <label>Adres URL z Otomoto
+      <input type="url" name="url" required placeholder="https://www.otomoto.pl/osobowe/oferta/... lub https://twojafirma.otomoto.pl/inventory">
+    </label>
+    <button type="submit" class="btn btn-primary">Importuj</button>
+  </form>
+
+  <div class="hint-card">
+    <h3>Wskazówki</h3>
+    <ul>
+      <li>Ogłoszenia już zaimportowane (ten sam adres URL) są pomijane — możesz bezpiecznie importować ponownie, aby dociągnąć nowe auta.</li>
+      <li>Po imporcie sprawdź ogłoszenie w zakładce „Ogłoszenia" i uzupełnij ewentualne braki.</li>
+      <li>Jeśli Otomoto zablokuje automatyczne pobieranie, dodaj auto ręcznie przez „Dodaj auto" — możesz wkleić adresy zdjęć z ogłoszenia.</li>
+    </ul>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('../partials/head') %>
+  <title><%= car ? 'Edytuj auto' : 'Dodaj auto' %> — Panel Level Auto</title>
+</head>
+<body class="admin-body">
+<%- include('partials/admin-nav', { tab: car ? 'cars' : 'new' }) %>
+
+<main class="container admin-main">
+  <h1><%= car ? 'Edytuj ogłoszenie' : 'Dodaj nowe auto' %></h1>
+  <% if (error) { %><div class="form-note err"><%= error %></div><% } %>
+
+  <form class="admin-form" method="POST" enctype="multipart/form-data"
+        action="<%= car ? `/admin/auta/${car.id}/edytuj` : '/admin/auta/nowe' %>">
+
+    <label>Tytuł ogłoszenia *<input type="text" name="title" required maxlength="200" value="<%= car ? car.title : '' %>" placeholder="np. Ford Mustang GT 5.0 V8"></label>
+
+    <div class="form-row">
+      <label>Marka<input type="text" name="brand" value="<%= car ? (car.brand || '') : '' %>"></label>
+      <label>Model<input type="text" name="model" value="<%= car ? (car.model || '') : '' %>"></label>
+      <label>Rocznik<input type="number" name="year" min="1950" max="2030" value="<%= car ? (car.year || '') : '' %>"></label>
+    </div>
+
+    <div class="form-row">
+      <label>Cena<input type="number" name="price" min="0" value="<%= car ? (car.price || '') : '' %>"></label>
+      <label>Waluta
+        <select name="currency">
+          <option value="PLN" <%= car && car.currency === 'PLN' ? 'selected' : '' %>>PLN</option>
+          <option value="EUR" <%= car && car.currency === 'EUR' ? 'selected' : '' %>>EUR</option>
+        </select>
+      </label>
+      <label>Przebieg (km)<input type="number" name="mileage" min="0" value="<%= car ? (car.mileage || '') : '' %>"></label>
+    </div>
+
+    <div class="form-row">
+      <label>Paliwo
+        <select name="fuel">
+          <% ['','Benzyna','Benzyna+LPG','Diesel','Hybryda','Elektryczny'].forEach(f => { %>
+            <option value="<%= f %>" <%= car && car.fuel === f ? 'selected' : '' %>><%= f || '—' %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Skrzynia biegów
+        <select name="transmission">
+          <% ['','Automatyczna','Manualna'].forEach(t => { %>
+            <option value="<%= t %>" <%= car && car.transmission === t ? 'selected' : '' %>><%= t || '—' %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>Moc (KM)<input type="number" name="power" min="0" value="<%= car ? (car.power || '') : '' %>"></label>
+      <label>Pojemność (cm³)<input type="number" name="engine_capacity" min="0" value="<%= car ? (car.engine_capacity || '') : '' %>"></label>
+    </div>
+
+    <div class="form-row">
+      <label>Nadwozie<input type="text" name="body_type" value="<%= car ? (car.body_type || '') : '' %>" placeholder="SUV / Coupe / Sedan..."></label>
+      <label>Kolor<input type="text" name="color" value="<%= car ? (car.color || '') : '' %>"></label>
+      <label>VIN<input type="text" name="vin" value="<%= car ? (car.vin || '') : '' %>"></label>
+    </div>
+
+    <label>Opis<textarea name="description" rows="8"><%= car ? (car.description || '') : '' %></textarea></label>
+
+    <div class="form-row">
+      <label>Status
+        <select name="status">
+          <option value="dostepny" <%= car && car.status === 'dostepny' ? 'selected' : '' %>>Dostępny</option>
+          <option value="zarezerwowany" <%= car && car.status === 'zarezerwowany' ? 'selected' : '' %>>Zarezerwowany</option>
+          <option value="sprzedany" <%= car && car.status === 'sprzedany' ? 'selected' : '' %>>Sprzedany</option>
+        </select>
+      </label>
+      <label class="checkbox-label"><input type="checkbox" name="featured" <%= car && car.featured ? 'checked' : '' %>> Wyróżnij na stronie głównej</label>
+    </div>
+
+    <label>Link do ogłoszenia na Otomoto<input type="url" name="source_url" value="<%= car ? (car.source_url || '') : '' %>" placeholder="https://www.otomoto.pl/osobowe/oferta/..."></label>
+
+    <% if (car && car.imageList.length && car.imageList[0] !== '/img/no-photo.svg') { %>
+      <fieldset class="images-fieldset">
+        <legend>Obecne zdjęcia (odznacz, aby usunąć)</legend>
+        <div class="images-grid">
+          <% car.imageList.forEach(img => { %>
+            <label class="image-keep"><input type="checkbox" name="keep_images" value="<%= img %>" checked><img src="<%= img %>" alt=""></label>
+          <% }) %>
+        </div>
+      </fieldset>
+    <% } %>
+
+    <label>Dodaj zdjęcia (możesz wybrać wiele)<input type="file" name="photos" accept="image/*" multiple></label>
+    <label>...lub wklej adresy URL zdjęć (jeden na linię)<textarea name="image_urls" rows="3" placeholder="https://..."></textarea></label>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary"><%= car ? 'Zapisz zmiany' : 'Dodaj ogłoszenie' %></button>
+      <a href="/admin" class="btn btn-outline">Anuluj</a>
+    </div>
+  </form>
+</main>
+</body>
+</html>

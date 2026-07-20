@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('../partials/head') %>
+  <title>Wiadomości — Panel Level Auto</title>
+</head>
+<body class="admin-body">
+<%- include('partials/admin-nav', { tab: 'messages' }) %>
+
+<main class="container admin-main">
+  <h1>Wiadomości z formularza kontaktowego</h1>
+  <% if (!messages.length) { %><p class="empty-note">Brak wiadomości.</p><% } %>
+
+  <div class="messages-list">
+    <% messages.forEach(m => { %>
+      <div class="message-card">
+        <div class="message-head">
+          <strong><%= m.name %></strong>
+          <small><%= m.created_at %></small>
+        </div>
+        <div class="message-contact">
+          <% if (m.email) { %><a href="mailto:<%= m.email %>"><%= m.email %></a><% } %>
+          <% if (m.phone) { %><a href="tel:<%= m.phone %>"><%= m.phone %></a><% } %>
+          <% if (m.car_title) { %><span class="message-car">🚗 <%= m.car_title %></span><% } %>
+        </div>
+        <p><%= m.message %></p>
+        <form method="POST" action="/admin/wiadomosci/<%= m.id %>/usun" onsubmit="return confirm('Usunąć wiadomość?')">
+          <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+</main>
+</body>
+</html>

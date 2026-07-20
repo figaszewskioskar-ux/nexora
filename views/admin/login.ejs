@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('../partials/head') %>
+  <title>Logowanie — Panel Level Auto</title>
+</head>
+<body class="admin-body">
+<div class="login-wrap">
+  <form class="login-card" method="POST" action="/admin/login">
+    <div class="brand-name" style="font-size:1.6rem;text-align:center">LEVEL <em>AUTO</em></div>
+    <p class="login-sub">Panel administratora</p>
+    <% if (error) { %><div class="form-note err"><%= error %></div><% } %>
+    <label>Login<input type="text" name="username" required autofocus autocomplete="username"></label>
+    <label>Hasło<input type="password" name="password" required autocomplete="current-password"></label>
+    <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
+    <a href="/" class="back-link" style="display:block;text-align:center;margin-top:1rem">← Wróć na stronę</a>
+  </form>
+</div>
+</body>
+</html>

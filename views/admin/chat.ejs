@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('../partials/head') %>
+  <title>Live chat — Panel Level Auto</title>
+</head>
+<body class="admin-body">
+<%- include('partials/admin-nav', { tab: 'chat' }) %>
+
+<main class="container admin-main">
+  <h1>Live chat</h1>
+  <div class="chat-console">
+    <aside class="chat-sessions" id="chatSessions">
+      <% if (!sessions.length) { %><p class="empty-note">Brak rozmów. Gdy klient napisze na czacie, rozmowa pojawi się tutaj.</p><% } %>
+      <% sessions.forEach(s => { %>
+        <button class="chat-session" data-session="<%= s.id %>">
+          <strong><%= s.visitor_name %></strong>
+          <% if (s.unread) { %><span class="chat-badge inline"><%= s.unread %></span><% } %>
+          <small><%= s.last_message ? s.last_message.slice(0, 60) : '(brak wiadomości)' %></small>
+          <small class="chat-time"><%= s.last_activity %></small>
+        </button>
+      <% }) %>
+    </aside>
+    <section class="chat-window">
+      <div class="chat-messages tall" id="adminChatMessages">
+        <p class="empty-note">Wybierz rozmowę z listy po lewej stronie.</p>
+      </div>
+      <form class="chat-input" id="adminChatForm" hidden>
+        <input type="text" id="adminChatText" placeholder="Napisz odpowiedź..." autocomplete="off" maxlength="2000">
+        <button type="submit" class="btn btn-primary">Wyślij</button>
+      </form>
+    </section>
+  </div>
+</main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/admin-chat.js"></script>
+</body>
+</html>

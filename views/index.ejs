@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('partials/head') %>
+  <title>Level Auto — Import aut z USA i Kanady | Sprzedaż samochodów</title>
+  <meta name="description" content="Level Auto — licytujemy, sprowadzamy i sprzedajemy samochody z USA i Kanady. Sprawdź auta na sprzedaż i zamów wymarzone auto z aukcji.">
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="hero-kicker">Import aut z USA i Kanady</p>
+    <h1>Kupimy oraz sprowadzimy<br>dla Ciebie <span>wymarzone auto</span></h1>
+    <p class="hero-sub">Licytujemy na renomowanych aukcjach Copart i IAAI, organizujemy transport przez ocean
+      i załatwiamy wszystkie formalności. Ty wybierasz auto — my zajmujemy się resztą.</p>
+    <div class="hero-actions">
+      <a href="/auta" class="btn btn-primary">Zobacz auta na sprzedaż</a>
+      <a href="#kontakt" class="btn btn-outline">Zamów auto z USA</a>
+    </div>
+    <div class="hero-stats">
+      <div><strong>10+</strong><span>lat doświadczenia</span></div>
+      <div><strong>500+</strong><span>sprowadzonych aut</span></div>
+      <div><strong>100%</strong><span>legalna dokumentacja</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="uslugi">
+  <div class="container">
+    <h2 class="section-title">Jak działamy?</h2>
+    <p class="section-sub">Cały proces importu auta zza oceanu — bez wychodzenia z domu.</p>
+    <div class="steps-grid">
+      <div class="step-card"><span class="step-num">1</span>
+        <h3>Wybierasz auto</h3>
+        <p>Mówisz nam, jakiego samochodu szukasz, albo wybierasz konkretny egzemplarz z aukcji Copart / IAAI. Doradzimy i zweryfikujemy historię pojazdu.</p>
+      </div>
+      <div class="step-card"><span class="step-num">2</span>
+        <h3>Licytujemy dla Ciebie</h3>
+        <p>Licytujemy w Twoim imieniu na aukcjach w USA i Kanadzie. Ustalamy limit ceny i pilnujemy budżetu — bez ukrytych kosztów.</p>
+      </div>
+      <div class="step-card"><span class="step-num">3</span>
+        <h3>Transport i formalności</h3>
+        <p>Organizujemy transport lądowy i morski, odprawę celną oraz pełną dokumentację. Auto trafia bezpiecznie do Polski.</p>
+      </div>
+      <div class="step-card"><span class="step-num">4</span>
+        <h3>Odbierasz kluczyki</h3>
+        <p>Pomagamy w naprawie, tłumaczeniach i rejestracji. Odbierasz gotowe do jazdy auto — często 20–30% taniej niż z polskiego rynku.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="oferta">
+  <div class="container">
+    <h2 class="section-title">Auta na sprzedaż</h2>
+    <p class="section-sub">Samochody sprowadzone, opłacone i gotowe do odbioru od ręki.</p>
+    <div class="cars-grid">
+      <% featured.forEach(car => { %>
+        <a class="car-card" href="/auta/<%= car.id %>">
+          <div class="car-photo">
+            <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+            <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
+          </div>
+          <div class="car-info">
+            <h3><%= car.title %></h3>
+            <div class="car-meta">
+              <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span>
+            </div>
+            <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+    <div class="center"><a href="/auta" class="btn btn-primary">Zobacz wszystkie ogłoszenia</a></div>
+  </div>
+</section>
+
+<section class="section" id="o-nas">
+  <div class="container about-grid">
+    <div>
+      <h2 class="section-title left">Dlaczego Level Auto?</h2>
+      <p>Od ponad dekady sprowadzamy samochody z rynku amerykańskiego i kanadyjskiego. Współpracujemy bezpośrednio
+        z aukcjami Copart i IAAI oraz sprawdzonymi przewoźnikami, dzięki czemu masz pewność uczciwej ceny
+        i bezpiecznej dostawy.</p>
+      <ul class="checklist">
+        <li>Pełna weryfikacja historii pojazdu (Carfax / AutoCheck)</li>
+        <li>Przejrzysta kalkulacja — znasz koszt końcowy przed licytacją</li>
+        <li>Własne zaplecze logistyczne i pomoc w naprawach</li>
+        <li>Faktura, umowa i wsparcie po zakupie</li>
+      </ul>
+    </div>
+    <div class="about-cardstack">
+      <div class="mini-card"><strong>Aukcje Copart / IAAI</strong><span>dostęp do tysięcy aut tygodniowo</span></div>
+      <div class="mini-card"><strong>Transport morski</strong><span>kontenery z portów USA i Kanady</span></div>
+      <div class="mini-card"><strong>Odprawa i akcyza</strong><span>wszystkie formalności po naszej stronie</span></div>
+      <div class="mini-card"><strong>Gwarancja legalności</strong><span>oryginalne dokumenty i tytuły własności</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="kontakt">
+  <div class="container contact-grid">
+    <div>
+      <h2 class="section-title left">Skontaktuj się z nami</h2>
+      <p>Masz pytanie o auto z oferty albo chcesz sprowadzić samochód na zamówienie? Napisz lub zadzwoń — odpowiadamy szybko.</p>
+      <div class="contact-details">
+        <p><strong>Telefon:</strong> <a href="tel:<%= contactPhone.replace(/\s/g,'') %>"><%= contactPhone %></a></p>
+        <p><strong>E-mail:</strong> <a href="mailto:<%= contactEmail %>"><%= contactEmail %></a></p>
+        <p><strong>Adres:</strong> <%= contactAddress %></p>
+        <p><strong>Godziny:</strong> pon–pt 9:00–18:00, sob 10:00–14:00</p>
+      </div>
+    </div>
+    <form class="contact-form" method="POST" action="/kontakt">
+      <input type="hidden" name="redirect" value="/">
+      <div class="form-note" id="formNote"></div>
+      <label>Imię i nazwisko *<input type="text" name="name" required maxlength="120"></label>
+      <div class="form-row">
+        <label>E-mail<input type="email" name="email" maxlength="160"></label>
+        <label>Telefon<input type="tel" name="phone" maxlength="40"></label>
+      </div>
+      <label>Wiadomość *<textarea name="message" rows="5" required maxlength="4000" placeholder="Np. interesuje mnie Ford Mustang z Waszej oferty..."></textarea></label>
+      <button type="submit" class="btn btn-primary">Wyślij wiadomość</button>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<script>
+  const params = new URLSearchParams(location.search);
+  const note = document.getElementById('formNote');
+  if (params.get('sent') === '1') { note.textContent = '✅ Dziękujemy! Twoja wiadomość została wysłana — odezwiemy się wkrótce.'; note.className = 'form-note ok'; }
+  if (params.get('error') === '1') { note.textContent = '⚠️ Uzupełnij wymagane pola formularza.'; note.className = 'form-note err'; }
+</script>
+</body>
+</html>

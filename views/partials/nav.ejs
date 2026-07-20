@@ -1,0 +1,16 @@
+<header class="site-header">
+  <div class="container nav-inner">
+    <a class="brand" href="/">
+      <img src="/img/logo.svg" alt="Level Auto" class="brand-logo">
+      <span class="brand-name">LEVEL <em>AUTO</em></span>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="/" class="<%= page === 'home' ? 'active' : '' %>">Strona główna</a>
+      <a href="/auta" class="<%= page === 'cars' ? 'active' : '' %>">Auta na sprzedaż</a>
+      <a href="/#uslugi">Jak działamy</a>
+      <a href="/#o-nas">O nas</a>
+      <a href="/#kontakt" class="nav-cta">Kontakt</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mainNav').classList.toggle('open')">☰</button>
+  </div>
+</header>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#15151a"/>
+  <path d="M140 330 c30 -60 70 -90 150 -95 l60 -40 c60 -30 200 -30 250 5 l50 35 c60 10 90 40 95 90 l-20 10 h-585 z" fill="#2a2a35"/>
+  <circle cx="255" cy="345" r="38" fill="#0c0c10" stroke="#3a3a44" stroke-width="10"/>
+  <circle cx="565" cy="345" r="38" fill="#0c0c10" stroke="#3a3a44" stroke-width="10"/>
+  <text x="400" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#9a9aa5">Brak zdjęcia</text>
+</svg>

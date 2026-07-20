@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('partials/head') %>
+  <title>Auta na sprzedaż — Level Auto</title>
+  <meta name="description" content="Samochody na sprzedaż w Level Auto — auta sprowadzone z USA i Kanady, opłacone i gotowe do rejestracji.">
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="page-hero">
+  <div class="container">
+    <h1>Auta na sprzedaż</h1>
+    <p>Wszystkie auta sprawdzone, opłacone i z pełną dokumentacją importową.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="filters" method="GET" action="/auta">
+      <input type="text" name="q" placeholder="Szukaj (np. Mustang)" value="<%= filters.q || '' %>">
+      <select name="brand">
+        <option value="">Marka: wszystkie</option>
+        <% brands.forEach(b => { %><option value="<%= b %>" <%= filters.brand === b ? 'selected' : '' %>><%= b %></option><% }) %>
+      </select>
+      <select name="fuel">
+        <option value="">Paliwo: wszystkie</option>
+        <% fuels.forEach(f => { %><option value="<%= f %>" <%= filters.fuel === f ? 'selected' : '' %>><%= f %></option><% }) %>
+      </select>
+      <select name="sort">
+        <option value="">Sortuj: najnowsze</option>
+        <option value="price_asc" <%= filters.sort === 'price_asc' ? 'selected' : '' %>>Cena: rosnąco</option>
+        <option value="price_desc" <%= filters.sort === 'price_desc' ? 'selected' : '' %>>Cena: malejąco</option>
+        <option value="year_desc" <%= filters.sort === 'year_desc' ? 'selected' : '' %>>Rocznik: najnowsze</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Filtruj</button>
+    </form>
+
+    <% if (!cars.length) { %>
+      <p class="empty-note">Brak ogłoszeń spełniających kryteria. <a href="/auta">Wyczyść filtry</a></p>
+    <% } %>
+
+    <div class="cars-grid">
+      <% cars.forEach(car => { %>
+        <a class="car-card" href="/auta/<%= car.id %>">
+          <div class="car-photo">
+            <img src="<%= car.imageList[0] %>" alt="<%= car.title %>" loading="lazy">
+            <% if (car.status === 'zarezerwowany') { %><span class="ribbon">Zarezerwowany</span><% } %>
+          </div>
+          <div class="car-info">
+            <h3><%= car.title %></h3>
+            <div class="car-meta">
+              <span><%= car.year || '—' %></span><span><%= fmtKm(car.mileage) %></span><span><%= car.fuel || '—' %></span><span><%= car.transmission || '—' %></span>
+            </div>
+            <div class="car-price"><%= fmtPrice(car.price, car.currency) %></div>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>
